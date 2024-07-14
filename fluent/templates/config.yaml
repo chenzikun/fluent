@@ -1,0 +1,83 @@
+# 是否开启协程
+gevent: true
+# 日志配置
+logging:
+  # 是否使用fluent的日志系统
+  # fluent_log: true
+  level: INFO
+  format: '%(asctime)s - %(processName)s - %(threadName)s - %(filename)s - %(funcName)s - [line:%(lineno)d] - %(levelname)s: %(message)s'
+# 如果需要日志写到文件中，请配置filename
+#  filename: ./example.log
+# 如果支持rotate日志，请将rotate值修改为true,默认不配置为false
+#  rotate: true
+# rotate日志大小，默认500MB, 默认backupCount 10
+#  maxMB: 100
+#  backupCount: 3
+
+
+# 调度器配置
+scheduler:
+  input_q_size: 100
+  output_q_size: 100
+#  persist_queue: true
+#  input_q_path: ./input_q
+#  output_q_path: ./output_q
+
+  signature: |
+    =================
+    User Signature !
+    =================
+# default=directory basename
+#  task_name:
+
+# 是否开启上报插件
+#  reporter:
+#    ip: devcloud
+#    port: 8086
+#    measurement: fluent
+
+# 入口配置
+input:
+  threads: 1
+  # 支持程序中断，默认不中断
+#  interval: 1
+  # input handle_item 函数是否循环，当你的数据源是一次性函数调用，将loop置为false
+#  loop: false
+
+process:
+  threads: 1
+
+# 出口配置
+output:
+  threads: 1
+# 支持程序中断，默认不中断
+#  interval: 0.001
+
+# monitor配置
+# 默认不开启监控配置，当前仅支持
+#monitor:
+#  interval: 60
+#  measurement: fluent_queue
+
+#thread_flex:
+#  动态线程监听频率
+#  interval: 60
+#  measurement: fluent_thread_flex
+#  flex_step_rate: 0.1
+#  input_flex_max_rate: 1
+#  process_flex_max_rate: 3
+#  output_flex_max_rate: 3
+
+#monitor_resource:
+#  interval: 60
+#  measurement: fluent_resource
+#  mem_max: 4  # GB
+#  gc_collect: true
+
+# apscheduler调度器设置
+#crontask:
+#  measurement: crontask
+#  timezone: Asia/Shanghai
+#  apscheduler:
+#    apscheduler.job_defaults.max_instances: 10
+#    apscheduler.job_defaults.coalesce: false

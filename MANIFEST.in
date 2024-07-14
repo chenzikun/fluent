@@ -1,0 +1,4 @@
+include fluent/templates/*
+include docs
+include requirements.txt
+include tests
