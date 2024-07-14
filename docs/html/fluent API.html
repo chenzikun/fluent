@@ -1,0 +1,630 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>fluent API &mdash; fluent  文档</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script type="text/javascript" src="_static/translations.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="fluent.core API" href="fluent.core.html" />
+    <link rel="prev" title="如何写一个插件" href="如何写一个插件.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> fluent
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="fluent.html">fluent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install fluent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scheduler.html">scheduler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitor.html">monitor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="thread_flex.html">thread_flex</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitor_resource.html">monitor_resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contask.html">crontask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">config文件的使用方式</a></li>
+<li class="toctree-l1"><a class="reference internal" href="log.html">fluent log 设计原则</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gevent.html">gevent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions.html">extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="如何写一个插件.html">如何写一个插件</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">fluent API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#fluent-core">fluent.core</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="fluent.core.html">fluent.core API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#fluent-extensions">fluent.extensions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="fluent.extensions.html">fluent.extensions API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-fluent.scheduler">fluent.scheduler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-fluent.cli">fluent.cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-fluent.log">fluent.log</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-fluent.model">fluent.model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-fluent.reporter">fluent.reporter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-fluent._global">fluent._global</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-fluent">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">fluent</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>fluent API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/fluent API.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="fluent-api">
+<h1>fluent API<a class="headerlink" href="#fluent-api" title="永久链接至标题">¶</a></h1>
+<div class="section" id="fluent-core">
+<h2>fluent.core<a class="headerlink" href="#fluent-core" title="永久链接至标题">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="fluent.core.html">fluent.core API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="fluent.core.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fluent.core.html#module-fluent.core.inputer">fluent.core.inputer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fluent.core.html#module-fluent.core.outputer">fluent.core.outputer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fluent.core.html#module-fluent.core.processor">fluent.core.processor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fluent.core.html#module-fluent.core.utils">fluent.core.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fluent.core.html#module-fluent.core">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="fluent-extensions">
+<h2>fluent.extensions<a class="headerlink" href="#fluent-extensions" title="永久链接至标题">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="fluent.extensions.html">fluent.extensions API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="fluent.extensions.html#module-fluent.extensions.monitor">fluent.extensions.monitor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fluent.extensions.html#module-fluent.extensions.monitor_resource">fluent.extensions.monitor_resource</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fluent.extensions.html#module-fluent.extensions.thread_flex">fluent.extensions.thread_flex</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fluent.extensions.html#module-fluent.extensions">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="module-fluent.scheduler">
+<span id="fluent-scheduler"></span><h2>fluent.scheduler<a class="headerlink" href="#module-fluent.scheduler" title="永久链接至标题">¶</a></h2>
+<p>调度器</p>
+<ul class="simple">
+<li>负责线程调度和input, processor, output管理</li>
+<li>保证线程安全执行</li>
+</ul>
+<dl class="class">
+<dt id="fluent.scheduler.Scheduler">
+<em class="property">class </em><code class="descclassname">fluent.scheduler.</code><code class="descname">Scheduler</code><span class="sig-paren">(</span><em>config</em>, <em>input</em>, <em>processor</em>, <em>output</em>, <em>task_name=None</em>, <em>debug=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/scheduler.html#Scheduler"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.scheduler.Scheduler" title="永久链接至目标">¶</a></dt>
+<dd><p>常驻进程或定时任务</p>
+<p>不在同一个进程应在外部实现，不改变同一个进程内部逻辑</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">参数:</th><td class="field-body"><ul class="first last simple">
+<li><strong>config</strong> – 配置</li>
+<li><strong>input</strong> (<a class="reference internal" href="fluent.core.html#fluent.core.inputer.Inputer" title="fluent.core.inputer.Inputer"><em>Inputer</em></a>) – job.input</li>
+<li><strong>processor</strong> (<a class="reference internal" href="fluent.core.html#fluent.core.processor.Processor" title="fluent.core.processor.Processor"><em>Processor</em></a>) – job.Processor</li>
+<li><strong>output</strong> (<a class="reference internal" href="fluent.core.html#fluent.core.outputer.Outputer" title="fluent.core.outputer.Outputer"><em>Outputer</em></a>) – job.Outputer</li>
+<li><strong>job_dir</strong> – job所在路径</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="fluent.scheduler.Scheduler.conf">
+<code class="descname">conf</code><a class="headerlink" href="#fluent.scheduler.Scheduler.conf" title="永久链接至目标">¶</a></dt>
+<dd><p>配置文件</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="fluent.scheduler.Scheduler.e">
+<code class="descname">e</code><a class="headerlink" href="#fluent.scheduler.Scheduler.e" title="永久链接至目标">¶</a></dt>
+<dd><p>Event， 阻塞主线程</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="fluent.scheduler.Scheduler.core_flows">
+<code class="descname">core_flows</code><a class="headerlink" href="#fluent.scheduler.Scheduler.core_flows" title="永久链接至目标">¶</a></dt>
+<dd><p>数据处理流程, 按照input-&gt; process -&gt; output做排序</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="fluent.scheduler.Scheduler.SETUP_ASIDE_FLOWS">
+<code class="descname">SETUP_ASIDE_FLOWS</code><em class="property"> = {'crontask': &lt;class 'fluent.extensions.crontask.CronTask'&gt;, 'monitor': &lt;class 'fluent.extensions.monitor.Monitor'&gt;, 'monitor_resource': &lt;class 'fluent.extensions.monitor_resource.MonitorResource'&gt;, 'thread_flex': &lt;class 'fluent.extensions.thread_flex.ThreadFlex'&gt;}</em><a class="headerlink" href="#fluent.scheduler.Scheduler.SETUP_ASIDE_FLOWS" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fluent.scheduler.Scheduler.exit">
+<code class="descname">exit</code><span class="sig-paren">(</span><em>signalnum=None</em>, <em>handler=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/scheduler.html#Scheduler.exit"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.scheduler.Scheduler.exit" title="永久链接至目标">¶</a></dt>
+<dd><p>处理完当前的数据后关闭</p>
+<p>在这里给各个线程发送信号，且按顺序关闭设置信号</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fluent.scheduler.Scheduler.init_aside_flows">
+<code class="descname">init_aside_flows</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/scheduler.html#Scheduler.init_aside_flows"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.scheduler.Scheduler.init_aside_flows" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="fluent.scheduler.Scheduler.register_flow">
+<em class="property">classmethod </em><code class="descname">register_flow</code><span class="sig-paren">(</span><em>extension_name</em>, <em>flow</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/scheduler.html#Scheduler.register_flow"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.scheduler.Scheduler.register_flow" title="永久链接至目标">¶</a></dt>
+<dd><p>注册流程</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="fluent.scheduler.Scheduler.reporter">
+<code class="descname">reporter</code><a class="headerlink" href="#fluent.scheduler.Scheduler.reporter" title="永久链接至目标">¶</a></dt>
+<dd><p>单线程实例property</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fluent.scheduler.Scheduler.set_signal">
+<code class="descname">set_signal</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/scheduler.html#Scheduler.set_signal"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.scheduler.Scheduler.set_signal" title="永久链接至目标">¶</a></dt>
+<dd><p>接管信号</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fluent.scheduler.Scheduler.start">
+<code class="descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/scheduler.html#Scheduler.start"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.scheduler.Scheduler.start" title="永久链接至目标">¶</a></dt>
+<dd><p>启动Scheduler， 并接管Ctrl+c和 kill -2(TERM) 中断信号</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fluent.scheduler.Scheduler.start_debug_mode">
+<code class="descname">start_debug_mode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/scheduler.html#Scheduler.start_debug_mode"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.scheduler.Scheduler.start_debug_mode" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fluent.scheduler.Scheduler.start_flows_on_threads">
+<code class="descname">start_flows_on_threads</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/scheduler.html#Scheduler.start_flows_on_threads"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.scheduler.Scheduler.start_flows_on_threads" title="永久链接至目标">¶</a></dt>
+<dd><p>多线程启动flows</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fluent.scheduler.Scheduler.stop">
+<code class="descname">stop</code><span class="sig-paren">(</span><em>signalnum=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/scheduler.html#Scheduler.stop"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.scheduler.Scheduler.stop" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fluent.scheduler.Scheduler.stop_aside_flows">
+<code class="descname">stop_aside_flows</code><span class="sig-paren">(</span><em>pre_tag</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/scheduler.html#Scheduler.stop_aside_flows"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.scheduler.Scheduler.stop_aside_flows" title="永久链接至目标">¶</a></dt>
+<dd><p>停止插件</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-fluent.cli">
+<span id="fluent-cli"></span><h2>fluent.cli<a class="headerlink" href="#module-fluent.cli" title="永久链接至标题">¶</a></h2>
+<p>命令行</p>
+<ol class="arabic simple">
+<li>参数管理</li>
+<li>job模块加载</li>
+</ol>
+<dl class="function">
+<dt id="fluent.cli.extract_worker_dir">
+<code class="descclassname">fluent.cli.</code><code class="descname">extract_worker_dir</code><span class="sig-paren">(</span><em>directory</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/cli.html#extract_worker_dir"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.cli.extract_worker_dir" title="永久链接至目标">¶</a></dt>
+<dd><p>解析worker文件夹</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">参数:</th><td class="field-body"><strong>directory</strong> (<em>str</em>) – 工作目录文件夹</td>
+</tr>
+<tr class="field-even field"><th class="field-name">返回:</th><td class="field-body">a list of Producer, shuffler, Consumer</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">返回类型:</th><td class="field-body">tuple</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="fluent.cli.get_conf">
+<code class="descclassname">fluent.cli.</code><code class="descname">get_conf</code><span class="sig-paren">(</span><em>filepath</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/cli.html#get_conf"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.cli.get_conf" title="永久链接至目标">¶</a></dt>
+<dd><p>加载配置文件</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">参数:</th><td class="field-body"><strong>filepath</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">返回:</th><td class="field-body">conf配置文件</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">返回类型:</th><td class="field-body">dict</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="fluent.cli.go">
+<code class="descclassname">fluent.cli.</code><code class="descname">go</code><span class="sig-paren">(</span><em>task_dir</em>, <em>debug</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/cli.html#go"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.cli.go" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="fluent.cli.load_module_after_init">
+<code class="descclassname">fluent.cli.</code><code class="descname">load_module_after_init</code><span class="sig-paren">(</span><em>directory</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/cli.html#load_module_after_init"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.cli.load_module_after_init" title="永久链接至目标">¶</a></dt>
+<dd><p>有些任务是依赖_global里的数据，这里通常是在服务启动之后设置的</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-fluent.log">
+<span id="fluent-log"></span><h2>fluent.log<a class="headerlink" href="#module-fluent.log" title="永久链接至标题">¶</a></h2>
+<p>logger处理， 设置logger配置</p>
+<p>只有set_logger提供给外部使用</p>
+<dl class="class">
+<dt id="fluent.log.Logger">
+<em class="property">class </em><code class="descclassname">fluent.log.</code><code class="descname">Logger</code><span class="sig-paren">(</span><em>conf=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/log.html#Logger"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.log.Logger" title="永久链接至目标">¶</a></dt>
+<dd><p>日志配置</p>
+<p>支持定制化配置format, level, fileHandler, rotateFileHandler</p>
+<dl class="attribute">
+<dt id="fluent.log.Logger.conf">
+<code class="descname">conf</code><a class="headerlink" href="#fluent.log.Logger.conf" title="永久链接至目标">¶</a></dt>
+<dd><p>日志配置</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="fluent.log.Logger.logging_conf">
+<code class="descname">logging_conf</code><a class="headerlink" href="#fluent.log.Logger.logging_conf" title="永久链接至目标">¶</a></dt>
+<dd><p>用于设置BasicConf的配置</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fluent.log.Logger.set_level">
+<code class="descname">set_level</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/log.html#Logger.set_level"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.log.Logger.set_level" title="永久链接至目标">¶</a></dt>
+<dd><p>设置日志级别</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fluent.log.Logger.set_format">
+<code class="descname">set_format</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/log.html#Logger.set_format"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.log.Logger.set_format" title="永久链接至目标">¶</a></dt>
+<dd><p>设置日志format</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fluent.log.Logger.set_file">
+<code class="descname">set_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/log.html#Logger.set_file"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.log.Logger.set_file" title="永久链接至目标">¶</a></dt>
+<dd><p>设置文件， 如果handler是fileHandler或者rotateFileHandler</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="fluent.log.Logger.DEFAULT_BACKUP_COUNT">
+<code class="descname">DEFAULT_BACKUP_COUNT</code><em class="property"> = 10</em><a class="headerlink" href="#fluent.log.Logger.DEFAULT_BACKUP_COUNT" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="fluent.log.Logger.DEFAULT_FORMAT">
+<code class="descname">DEFAULT_FORMAT</code><em class="property"> = '%(asctime)s - %(processName)s - %(threadName)s - %(filename)s - %(funcName)s - [line:%(lineno)d] - %(levelname)s: %(message)s'</em><a class="headerlink" href="#fluent.log.Logger.DEFAULT_FORMAT" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="fluent.log.Logger.DEFAULT_LEVEL">
+<code class="descname">DEFAULT_LEVEL</code><em class="property"> = 20</em><a class="headerlink" href="#fluent.log.Logger.DEFAULT_LEVEL" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="fluent.log.Logger.DEFAULT_MAX_BYTES">
+<code class="descname">DEFAULT_MAX_BYTES</code><em class="property"> = 500</em><a class="headerlink" href="#fluent.log.Logger.DEFAULT_MAX_BYTES" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fluent.log.Logger.get_formater">
+<code class="descname">get_formater</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/log.html#Logger.get_formater"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.log.Logger.get_formater" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fluent.log.Logger.get_logger">
+<code class="descname">get_logger</code><span class="sig-paren">(</span><em>name=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/log.html#Logger.get_logger"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.log.Logger.get_logger" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fluent.log.Logger.get_rotating_logger">
+<code class="descname">get_rotating_logger</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/log.html#Logger.get_rotating_logger"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.log.Logger.get_rotating_logger" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fluent.log.Logger.replace_logging">
+<code class="descname">replace_logging</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/log.html#Logger.replace_logging"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.log.Logger.replace_logging" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">set_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/log.html#Logger.set_file"><span class="viewcode-link">[源代码]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">set_format</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/log.html#Logger.set_format"><span class="viewcode-link">[源代码]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">set_level</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/log.html#Logger.set_level"><span class="viewcode-link">[源代码]</span></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="fluent.log.set_logger">
+<code class="descclassname">fluent.log.</code><code class="descname">set_logger</code><span class="sig-paren">(</span><em>conf</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/log.html#set_logger"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.log.set_logger" title="永久链接至目标">¶</a></dt>
+<dd><p>设置日志, 将内置日志logging.getLogger替换成Logger</p>
+<p class="rubric">实际案例</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-fluent.model">
+<span id="fluent-model"></span><h2>fluent.model<a class="headerlink" href="#module-fluent.model" title="永久链接至标题">¶</a></h2>
+<p>数据结构</p>
+<dl class="class">
+<dt id="fluent.model.Config">
+<em class="property">class </em><code class="descclassname">fluent.model.</code><code class="descname">Config</code><span class="sig-paren">(</span><em>config</em>, <em>domain</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/model.html#Config"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.model.Config" title="永久链接至目标">¶</a></dt>
+<dd><dl class="method">
+<dt id="fluent.model.Config.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>item</em>, <em>default=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/model.html#Config.get"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.model.Config.get" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="fluent.model.Extra">
+<em class="property">class </em><code class="descclassname">fluent.model.</code><code class="descname">Extra</code><span class="sig-paren">(</span><em>extra_string</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/model.html#Extra"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.model.Extra" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="fluent.model.Extra.load_extra">
+<code class="descname">load_extra</code><span class="sig-paren">(</span><em>extra_string</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/model.html#Extra.load_extra"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.model.Extra.load_extra" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="fluent.model.FlowItem">
+<em class="property">class </em><code class="descclassname">fluent.model.</code><code class="descname">FlowItem</code><span class="sig-paren">(</span><em>flow_type</em>, <em>value</em>, <em>span=None</em>, <em>span_format_type='text_map'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/model.html#FlowItem"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.model.FlowItem" title="永久链接至目标">¶</a></dt>
+<dd><dl class="method">
+<dt id="fluent.model.FlowItem.extra">
+<code class="descname">extra</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/model.html#FlowItem.extra"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.model.FlowItem.extra" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fluent.model.FlowItem.inject">
+<code class="descname">inject</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/model.html#FlowItem.inject"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.model.FlowItem.inject" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-fluent.reporter">
+<span id="fluent-reporter"></span><h2>fluent.reporter<a class="headerlink" href="#module-fluent.reporter" title="永久链接至标题">¶</a></h2>
+<dl class="exception">
+<dt id="fluent.reporter.SendMonitorMessageException">
+<em class="property">exception </em><code class="descclassname">fluent.reporter.</code><code class="descname">SendMonitorMessageException</code><a class="reference internal" href="_modules/fluent/reporter.html#SendMonitorMessageException"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.reporter.SendMonitorMessageException" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.Exception</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="fluent.reporter.Telegraf">
+<em class="property">class </em><code class="descclassname">fluent.reporter.</code><code class="descname">Telegraf</code><span class="sig-paren">(</span><em>conf</em>, <em>task_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/reporter.html#Telegraf"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.reporter.Telegraf" title="永久链接至目标">¶</a></dt>
+<dd><p>监控视图上报</p>
+<dl class="method">
+<dt id="fluent.reporter.Telegraf.close">
+<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/reporter.html#Telegraf.close"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.reporter.Telegraf.close" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fluent.reporter.Telegraf.report">
+<code class="descname">report</code><span class="sig-paren">(</span><em>report_str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/reporter.html#Telegraf.report"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.reporter.Telegraf.report" title="永久链接至目标">¶</a></dt>
+<dd><p>上报数据透传给telegraf。
+数据格式：influxdb规范。</p>
+<p>举例：
+joox_cms_backend,service=adb,method=abc,host=1.1.1.1,result=success cost=100 132434567000</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fluent.reporter.Telegraf.report_cost">
+<code class="descname">report_cost</code><span class="sig-paren">(</span><em>name</em>, <em>interval</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/reporter.html#Telegraf.report_cost"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.reporter.Telegraf.report_cost" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fluent.reporter.Telegraf.report_task_progress">
+<code class="descname">report_task_progress</code><span class="sig-paren">(</span><em>measurement</em>, <em>fields</em>, <em>**tags</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/reporter.html#Telegraf.report_task_progress"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.reporter.Telegraf.report_task_progress" title="永久链接至目标">¶</a></dt>
+<dd><p>cost_time: 毫秒</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fluent.reporter.Telegraf.send">
+<code class="descname">send</code><span class="sig-paren">(</span><em>measurement</em>, <em>name</em>, <em>fields</em>, <em>**tags</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/reporter.html#Telegraf.send"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.reporter.Telegraf.send" title="永久链接至目标">¶</a></dt>
+<dd><p>发送数据</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-fluent._global">
+<span id="fluent-global"></span><h2>fluent._global<a class="headerlink" href="#module-fluent._global" title="永久链接至标题">¶</a></h2>
+</div>
+<div class="section" id="module-fluent">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-fluent" title="永久链接至标题">¶</a></h2>
+<p>fluent</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="fluent.core.html" class="btn btn-neutral float-right" title="fluent.core API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="如何写一个插件.html" class="btn btn-neutral float-left" title="如何写一个插件" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, zikunchen
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

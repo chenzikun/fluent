@@ -1,0 +1,30 @@
+.. _如何写一个插件:
+
+
+如何写一个插件
+==============
+
+.. code-block:: python
+
+    @register_flow('monitor_resource')
+    class MonitorResource(ExtensionABC):
+        """CPU和内存资源监控器，单线程
+
+        Attributes:
+            input_item:
+
+        Args:
+            scheduler(Scheduler)
+            conf: 配置项
+
+        """
+
+        EXIT_SIGNAL = False
+
+    def __init__(self, scheduler, conf):
+        self.scheduler = scheduler
+        self.conf = conf
+
+
+
+实现ExtensionABC抽象基类方法

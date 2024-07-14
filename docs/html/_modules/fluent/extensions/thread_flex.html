@@ -1,0 +1,426 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>fluent.extensions.thread_flex &mdash; fluent  文档</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script type="text/javascript" src="../../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> fluent
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../fluent.html">fluent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Install fluent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../scheduler.html">scheduler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../monitor.html">monitor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../thread_flex.html">thread_flex</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../monitor_resource.html">monitor_resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contask.html">crontask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../config.html">config文件的使用方式</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../log.html">fluent log 设计原则</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gevent.html">gevent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../extensions.html">extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../如何写一个插件.html">如何写一个插件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fluent API.html">fluent API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">fluent</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">模块代码</a> &raquo;</li>
+        
+      <li>fluent.extensions.thread_flex</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>fluent.extensions.thread_flex 源代码</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">监控模块， 单线程</span>
+<span class="sd"># todo 增加监控</span>
+<span class="sd"># 1. 通过监控两个队列的长度来判断处理流程的瓶颈在哪里, 前提条件是队列有一定的长度 done</span>
+<span class="sd"># 2. 通过监控process处理速度来判断整体进度 done</span>
+<span class="sd"># 3. 记录每个程序，消耗的时间</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">from</span> <span class="nn">fluent.compat</span> <span class="kn">import</span> <span class="n">PY2</span>
+<span class="kn">from</span> <span class="nn">fluent.utils</span> <span class="kn">import</span> <span class="n">sleep</span><span class="p">,</span> <span class="n">threadlazyproperty</span><span class="p">,</span> <span class="n">threadsingleton</span>
+
+<span class="kn">from</span> <span class="nn">..abcmeta</span> <span class="kn">import</span> <span class="n">ExtensionABC</span>
+<span class="kn">from</span> <span class="nn">..ctx</span> <span class="kn">import</span> <span class="n">register_flow</span>
+
+<span class="n">LOWER_USED_RATE</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">HIGHER_USED_RATE</span> <span class="o">=</span> <span class="mf">0.9</span>
+
+
+<div class="viewcode-block" id="FlexMethod"><a class="viewcode-back" href="../../../fluent.extensions.html#fluent.extensions.thread_flex.FlexMethod">[文档]</a><span class="k">class</span> <span class="nc">FlexMethod</span><span class="p">:</span>
+    <span class="n">add</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">reduce</span> <span class="o">=</span> <span class="mi">1</span></div>
+
+
+<div class="viewcode-block" id="ThreadFlexQueue"><a class="viewcode-back" href="../../../fluent.extensions.html#fluent.extensions.thread_flex.ThreadFlexQueue">[文档]</a><span class="k">class</span> <span class="nc">ThreadFlexQueue</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;对队列数据的监控</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        q(queue.Queue): 被监控的队列</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">NAME</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q</span> <span class="o">=</span> <span class="n">q</span>
+
+<div class="viewcode-block" id="ThreadFlexQueue.used_rate"><a class="viewcode-back" href="../../../fluent.extensions.html#fluent.extensions.thread_flex.ThreadFlexQueue.used_rate">[文档]</a>    <span class="k">def</span> <span class="nf">used_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;记录队列使用比例，可以观测是否某个流程在阻塞&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="o">.</span><span class="n">qsize</span><span class="p">()</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="o">.</span><span class="n">maxsize</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ThreadFlexQueue.is_lower_state"><a class="viewcode-back" href="../../../fluent.extensions.html#fluent.extensions.thread_flex.ThreadFlexQueue.is_lower_state">[文档]</a>    <span class="k">def</span> <span class="nf">is_lower_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">used_rate</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">LOWER_USED_RATE</span></div>
+
+<div class="viewcode-block" id="ThreadFlexQueue.is_higher_state"><a class="viewcode-back" href="../../../fluent.extensions.html#fluent.extensions.thread_flex.ThreadFlexQueue.is_higher_state">[文档]</a>    <span class="k">def</span> <span class="nf">is_higher_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">used_rate</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">HIGHER_USED_RATE</span></div></div>
+
+
+<div class="viewcode-block" id="FlowThreadNumberManager"><a class="viewcode-back" href="../../../fluent.extensions.html#fluent.extensions.thread_flex.FlowThreadNumberManager">[文档]</a><span class="k">class</span> <span class="nc">FlowThreadNumberManager</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    etl flow线程管理器</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        flow: etl flow</span>
+<span class="sd">        base_number: 基础配置线程数</span>
+<span class="sd">        max_number： 最大线程数</span>
+<span class="sd">        flex_step: 线程弹性伸缩值</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flow</span><span class="p">,</span> <span class="n">flex_max_rate</span><span class="p">,</span> <span class="n">flex_step_rate</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flow</span> <span class="o">=</span> <span class="n">flow</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_number</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">flow</span><span class="o">.</span><span class="n">base_threading_counter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_number</span> <span class="o">*</span> <span class="n">flex_max_rate</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flex_step</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_number</span> <span class="o">*</span> <span class="n">flex_step_rate</span><span class="p">)</span> <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_number</span> <span class="o">*</span> <span class="n">flex_step_rate</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">1</span>
+
+<div class="viewcode-block" id="FlowThreadNumberManager.is_larger_than_base"><a class="viewcode-back" href="../../../fluent.extensions.html#fluent.extensions.thread_flex.FlowThreadNumberManager.is_larger_than_base">[文档]</a>    <span class="k">def</span> <span class="nf">is_larger_than_base</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">flow</span><span class="o">.</span><span class="n">threading_counter</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_number</span></div>
+
+<div class="viewcode-block" id="FlowThreadNumberManager.is_less_than_max_number"><a class="viewcode-back" href="../../../fluent.extensions.html#fluent.extensions.thread_flex.FlowThreadNumberManager.is_less_than_max_number">[文档]</a>    <span class="k">def</span> <span class="nf">is_less_than_max_number</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">flow</span><span class="o">.</span><span class="n">threading_counter</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_number</span></div>
+
+<div class="viewcode-block" id="FlowThreadNumberManager.get_add_flex_step"><a class="viewcode-back" href="../../../fluent.extensions.html#fluent.extensions.thread_flex.FlowThreadNumberManager.get_add_flex_step">[文档]</a>    <span class="k">def</span> <span class="nf">get_add_flex_step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;获取单次增加线程量&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">flow</span><span class="o">.</span><span class="n">threading_counter</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">flex_step</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_number</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_number</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">flow</span><span class="o">.</span><span class="n">threading_counter</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">flex_step</span></div>
+
+<div class="viewcode-block" id="FlowThreadNumberManager.get_reduce_flex_step"><a class="viewcode-back" href="../../../fluent.extensions.html#fluent.extensions.thread_flex.FlowThreadNumberManager.get_reduce_flex_step">[文档]</a>    <span class="k">def</span> <span class="nf">get_reduce_flex_step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;获取单次减少线程量&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">flow</span><span class="o">.</span><span class="n">threading_counter</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_number</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">flow</span><span class="o">.</span><span class="n">threading_counter</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_number</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">flex_step</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">flow</span><span class="o">.</span><span class="n">threading_counter</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_number</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">flex_step</span></div>
+
+<div class="viewcode-block" id="FlowThreadNumberManager.add"><a class="viewcode-back" href="../../../fluent.extensions.html#fluent.extensions.thread_flex.FlowThreadNumberManager.add">[文档]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;减少线程&quot;&quot;&quot;</span>
+        <span class="n">add_flex_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_add_flex_step</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">add_flex_step</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">flow</span><span class="o">.</span><span class="n">threading_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">PY2</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">flow</span><span class="o">.</span><span class="n">sem</span><span class="o">.</span><span class="n">_Semaphore__value</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">flow</span><span class="o">.</span><span class="n">sem</span><span class="o">.</span><span class="n">_value</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">flow</span><span class="o">.</span><span class="n">_start_one_thead</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">flow</span><span class="o">.</span><span class="n">threading_counter</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FlowThreadNumberManager.reduce"><a class="viewcode-back" href="../../../fluent.extensions.html#fluent.extensions.thread_flex.FlowThreadNumberManager.reduce">[文档]</a>    <span class="k">def</span> <span class="nf">reduce</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;增加线程&quot;&quot;&quot;</span>
+        <span class="n">reduce_flex_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_reduce_flex_step</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">reduce_flex_step</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">flow</span><span class="o">.</span><span class="n">exit_one_thread</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">flow</span><span class="o">.</span><span class="n">threading_counter</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">flow</span><span class="o">.</span><span class="n">threading_counter</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">PY2</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">flow</span><span class="o">.</span><span class="n">sem</span><span class="o">.</span><span class="n">_Semaphore__value</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">flow</span><span class="o">.</span><span class="n">sem</span><span class="o">.</span><span class="n">_value</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">collect_mem</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="FlowThreadNumberManager.collect_mem"><a class="viewcode-back" href="../../../fluent.extensions.html#fluent.extensions.thread_flex.FlowThreadNumberManager.collect_mem">[文档]</a>    <span class="k">def</span> <span class="nf">collect_mem</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">threadlazyproperty</span><span class="o">.</span><span class="n">clear_thread</span><span class="p">()</span>
+        <span class="n">threadsingleton</span><span class="o">.</span><span class="n">clear_thread</span><span class="p">()</span></div></div>
+
+
+<span class="nd">@register_flow</span><span class="p">(</span><span class="s1">&#39;thread_flex&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">ThreadFlex</span><span class="p">(</span><span class="n">ExtensionABC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;线程弹性伸缩管理器，单线程</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        scheduler(Scheduler)</span>
+<span class="sd">        conf: 配置项</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">EXIT_SIGNAL</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">EXIT_PRE</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">NAME</span> <span class="o">=</span> <span class="s1">&#39;thread_flex&#39;</span>
+
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scheduler</span><span class="p">,</span> <span class="n">conf</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :param scheduler: Scheduler</span>
+<span class="sd">        :param conf: 配置</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conf</span> <span class="o">=</span> <span class="n">conf</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span> <span class="o">=</span> <span class="n">scheduler</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">measurement</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;measurement&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interval_second</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;interval&#39;</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_q</span> <span class="o">=</span> <span class="n">ThreadFlexQueue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">q_of_inputer_processor</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_q</span> <span class="o">=</span> <span class="n">ThreadFlexQueue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">q_of_processor_outputer</span><span class="p">)</span>
+
+        <span class="n">flex_step_rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;flex_step_rate&#39;</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_manager</span> <span class="o">=</span> <span class="n">FlowThreadNumberManager</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;input_flex_max_rate&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                                                     <span class="n">flex_step_rate</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">processor_manager</span> <span class="o">=</span> <span class="n">FlowThreadNumberManager</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">processor</span><span class="p">,</span>
+                                                         <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;process_flex_max_rate&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">flex_step_rate</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_manager</span> <span class="o">=</span> <span class="n">FlowThreadNumberManager</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;output_flex_max_rate&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                                                      <span class="n">flex_step_rate</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rlock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interval_chunks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rerange_interval_chunks</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">monitor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;获取监控数据并发送数据&quot;&quot;&quot;</span>
+        <span class="n">fields_map</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;input_counter&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">threading_counter</span><span class="p">,</span>
+            <span class="s1">&#39;processor_counter&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">processor</span><span class="o">.</span><span class="n">threading_counter</span><span class="p">,</span>
+            <span class="s1">&#39;output_counter&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">threading_counter</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;threading.active_count:</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">active_count</span><span class="p">()))</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">fields_map</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">measurement</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">NAME</span><span class="p">,</span> <span class="n">fields_map</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">rerange_interval_chunks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">INTERVAL_CHUNK</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">interval_second</span> <span class="o">&lt;=</span> <span class="n">INTERVAL_CHUNK</span><span class="p">:</span>
+            <span class="n">chunks</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">interval_second</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">chunks</span> <span class="o">=</span> <span class="p">[</span><span class="n">INTERVAL_CHUNK</span><span class="p">]</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">interval_second</span> <span class="o">/</span> <span class="n">INTERVAL_CHUNK</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">interval_second</span> <span class="o">%</span> <span class="n">INTERVAL_CHUNK</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">chunks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">interval_second</span> <span class="o">%</span> <span class="n">INTERVAL_CHUNK</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">chunks</span>
+
+    <span class="k">def</span> <span class="nf">_interval</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;监控的频率&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">interval_chunks</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">EXIT_SIGNAL</span><span class="p">:</span>
+                <span class="n">sleep</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;在独立的线程中启动monitor, 由scheduler去控制&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_start</span><span class="p">()</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">EXIT_SIGNAL</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">thread_flex_handler</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">monitor</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_interval</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_end</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">thread_flex_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;线程弹性评估策略模型&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_q</span><span class="o">.</span><span class="n">is_lower_state</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_q</span><span class="o">.</span><span class="n">is_lower_state</span><span class="p">():</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_manager</span><span class="o">.</span><span class="n">is_less_than_max_number</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">loop</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">input_manager</span><span class="o">.</span><span class="n">add</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">processor_manager</span><span class="o">.</span><span class="n">is_larger_than_base</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">processor_manager</span><span class="o">.</span><span class="n">reduce</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_manager</span><span class="o">.</span><span class="n">is_larger_than_base</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">output_manager</span><span class="o">.</span><span class="n">reduce</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_q</span><span class="o">.</span><span class="n">is_lower_state</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_q</span><span class="o">.</span><span class="n">is_higher_state</span><span class="p">():</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_manager</span><span class="o">.</span><span class="n">is_less_than_max_number</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">output_manager</span><span class="o">.</span><span class="n">add</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_q</span><span class="o">.</span><span class="n">is_higher_state</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_q</span><span class="o">.</span><span class="n">is_lower_state</span><span class="p">():</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">processor_manager</span><span class="o">.</span><span class="n">is_less_than_max_number</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">processor_manager</span><span class="o">.</span><span class="n">add</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_q</span><span class="o">.</span><span class="n">is_higher_state</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_q</span><span class="o">.</span><span class="n">is_higher_state</span><span class="p">():</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_manager</span><span class="o">.</span><span class="n">is_larger_than_base</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">loop</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">input_manager</span><span class="o">.</span><span class="n">reduce</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">processor_manager</span><span class="o">.</span><span class="n">is_less_than_max_number</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">processor_manager</span><span class="o">.</span><span class="n">reduce</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_manager</span><span class="o">.</span><span class="n">is_less_than_max_number</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">output_manager</span><span class="o">.</span><span class="n">reduce</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rlock</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rlock</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">exit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;退出monitor&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">EXIT_SIGNAL</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_start</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_end</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, zikunchen
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

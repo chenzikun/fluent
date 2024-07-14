@@ -1,0 +1,291 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>monitor &mdash; fluent  文档</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script type="text/javascript" src="_static/translations.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="thread_flex" href="thread_flex.html" />
+    <link rel="prev" title="scheduler" href="scheduler.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> fluent
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="fluent.html">fluent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install fluent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scheduler.html">scheduler</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">monitor</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">监控项</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#telegraf-influxdb">监控插件telegraf =&gt; influxdb</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#grafana">grafana</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="thread_flex.html">thread_flex</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitor_resource.html">monitor_resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contask.html">crontask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">config文件的使用方式</a></li>
+<li class="toctree-l1"><a class="reference internal" href="log.html">fluent log 设计原则</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gevent.html">gevent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="如何写一个插件.html">如何写一个插件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fluent API.html">fluent API</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">fluent</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>monitor</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/monitor.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="monitor">
+<span id="id1"></span><h1>monitor<a class="headerlink" href="#monitor" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id2">
+<h2>监控项<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>监控队列</p>
+<ul class="simple">
+<li>input_q</li>
+<li>output_q</li>
+</ul>
+<p>每个队列的监控项</p>
+<ul class="simple">
+<li>used_rate: 队列使用长度长度占总长度的壁纸</li>
+<li>in_counter: 队列 <code class="docutils literal notranslate"><span class="pre">put</span></code> 计数</li>
+<li>out_counter: 队列 <code class="docutils literal notranslate"><span class="pre">get</span></code> 计数</li>
+</ul>
+</div>
+<div class="section" id="telegraf-influxdb">
+<h2>监控插件telegraf =&gt; influxdb<a class="headerlink" href="#telegraf-influxdb" title="永久链接至标题">¶</a></h2>
+<p>monitor通过telegraf将监控指标写入influxdb</p>
+<p>monitor写入influxdb的数据格式</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">json_body</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;measurement&quot;</span><span class="p">:</span> <span class="n">measurement</span><span class="p">,</span>
+        <span class="s2">&quot;tags&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;task_name&quot;</span><span class="p">:</span> <span class="s2">&quot;test&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;input_q&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="s2">&quot;2019-10-10T23:00:00Z&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fields&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;used_rate&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>在influxdb中的存储格式</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>&gt; <span class="k">select</span> * from <span class="nb">jobs</span> limit <span class="m">10</span><span class="p">;</span>
+name: <span class="nb">jobs</span>
+<span class="nb">time</span>                in_counter job  name     out_counter used_rate
+----                ---------- ---  ----     ----------- ---------
+<span class="m">1570627595284236032</span> <span class="m">120</span>        <span class="nb">test</span> input_q  <span class="m">120</span>         <span class="m">0</span>
+<span class="m">1570627595284264960</span> <span class="m">120</span>        <span class="nb">test</span> output_q <span class="m">119</span>         <span class="m">0</span>.2
+<span class="m">1570627596291826944</span> <span class="m">224</span>        <span class="nb">test</span> input_q  <span class="m">223</span>         <span class="m">0</span>.2
+<span class="m">1570627596291835904</span> <span class="m">223</span>        <span class="nb">test</span> output_q <span class="m">223</span>         <span class="m">0</span>
+<span class="m">1570627597297064192</span> <span class="m">343</span>        <span class="nb">test</span> input_q  <span class="m">343</span>         <span class="m">0</span>
+<span class="m">1570627597297089024</span> <span class="m">343</span>        <span class="nb">test</span> output_q <span class="m">339</span>         <span class="m">0</span>.8
+<span class="m">1570627598301306112</span> <span class="m">460</span>        <span class="nb">test</span> input_q  <span class="m">459</span>         <span class="m">0</span>.2
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">小技巧</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">caption:</th><td class="field-body">influxdb相关文档</td>
+</tr>
+</tbody>
+</table>
+<p>更多influx相关使用请参考文档</p>
+<ul class="last simple">
+<li>如何添加监控: &lt;<a class="reference external" href="https://docs.google.com/document/d/1TKdb3KCNcTQqCvTrw29Q425A8yiqCqVdFxlEsXMY01Q/edit">https://docs.google.com/document/d/1TKdb3KCNcTQqCvTrw29Q425A8yiqCqVdFxlEsXMY01Q/edit</a>&gt;</li>
+<li>influxdb: &lt;<a class="reference external" href="https://docs.influxdata.com/">https://docs.influxdata.com/</a>&gt;</li>
+<li>influxdb-python: &lt;<a class="reference external" href="https://github.com/influxdata/influxdb-python">https://github.com/influxdata/influxdb-python</a>&gt;</li>
+</ul>
+</div>
+</div>
+<div class="section" id="grafana">
+<h2>grafana<a class="headerlink" href="#grafana" title="永久链接至标题">¶</a></h2>
+<p>利用grafana展示数据效果</p>
+<img alt="screenshot of index page" class="screenshot align-center" src="_images/grafana.jpg" />
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="thread_flex.html" class="btn btn-neutral float-right" title="thread_flex" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="scheduler.html" class="btn btn-neutral float-left" title="scheduler" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, zikunchen
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

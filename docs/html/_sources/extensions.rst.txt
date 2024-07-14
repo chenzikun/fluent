@@ -1,0 +1,24 @@
+.. _extensions:
+
+extensions
+=============
+
+插件运行在独立的线程或者协程中
+
+系统内置插件
+
+1. crontask
+
+    定时任务插件: 提供定时任务注册能力
+
+2. monitor
+
+    队列监控系统，服务状态监控系统
+
+3. monitor_resource
+
+    CPU和内存监控系统
+
+4. thread_flex
+
+    线程或协程弹性伸缩插件

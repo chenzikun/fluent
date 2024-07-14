@@ -1,0 +1,588 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>fluent.core API &mdash; fluent  文档</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script type="text/javascript" src="_static/translations.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="fluent.extensions API" href="fluent.extensions.html" />
+    <link rel="prev" title="fluent API" href="fluent API.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> fluent
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="fluent.html">fluent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install fluent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scheduler.html">scheduler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitor.html">monitor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="thread_flex.html">thread_flex</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitor_resource.html">monitor_resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contask.html">crontask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">config文件的使用方式</a></li>
+<li class="toctree-l1"><a class="reference internal" href="log.html">fluent log 设计原则</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gevent.html">gevent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions.html">extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="如何写一个插件.html">如何写一个插件</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="fluent API.html">fluent API</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="fluent API.html#fluent-core">fluent.core</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">fluent.core API</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-fluent.core.inputer">fluent.core.inputer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-fluent.core.outputer">fluent.core.outputer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-fluent.core.processor">fluent.core.processor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-fluent.core.utils">fluent.core.utils</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-fluent.core">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="fluent API.html#fluent-extensions">fluent.extensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fluent API.html#module-fluent.scheduler">fluent.scheduler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fluent API.html#module-fluent.cli">fluent.cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fluent API.html#module-fluent.log">fluent.log</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fluent API.html#module-fluent.model">fluent.model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fluent API.html#module-fluent.reporter">fluent.reporter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fluent API.html#module-fluent._global">fluent._global</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fluent API.html#module-fluent">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">fluent</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="fluent API.html">fluent API</a> &raquo;</li>
+        
+      <li>fluent.core API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/fluent.core.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="fluent-core-api">
+<h1>fluent.core API<a class="headerlink" href="#fluent-core-api" title="永久链接至标题">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="永久链接至标题">¶</a></h2>
+</div>
+<div class="section" id="module-fluent.core.inputer">
+<span id="fluent-core-inputer"></span><h2>fluent.core.inputer<a class="headerlink" href="#module-fluent.core.inputer" title="永久链接至标题">¶</a></h2>
+<p>数据入口</p>
+<p>获取外部数据流，传递给processor处理</p>
+<dl class="class">
+<dt id="fluent.core.inputer.Inputer">
+<em class="property">class </em><code class="descclassname">fluent.core.inputer.</code><code class="descname">Inputer</code><span class="sig-paren">(</span><em>scheduler</em>, <em>conf</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/core/inputer.html#Inputer"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.core.inputer.Inputer" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<a class="reference internal" href="#fluent.core.utils.ThreadSafe" title="fluent.core.utils.ThreadSafe"><code class="xref py py-class docutils literal notranslate"><span class="pre">fluent.core.utils.ThreadSafe</span></code></a></p>
+<p>产生数据的地方</p>
+<dl class="attribute">
+<dt id="fluent.core.inputer.Inputer.internal">
+<code class="descname">internal</code><a class="headerlink" href="#fluent.core.inputer.Inputer.internal" title="永久链接至目标">¶</a></dt>
+<dd><p>内部中断时间，如果避免过快产生数据，可以在配置文件中设置这个值</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="fluent.core.inputer.Inputer.NAME">
+<code class="descname">NAME</code><em class="property"> = 'Inputer'</em><a class="headerlink" href="#fluent.core.inputer.Inputer.NAME" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fluent.core.inputer.Inputer.exit_one_thread">
+<code class="descname">exit_one_thread</code><span class="sig-paren">(</span><em>i</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/core/inputer.html#Inputer.exit_one_thread"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.core.inputer.Inputer.exit_one_thread" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fluent.core.inputer.Inputer.handle_item">
+<code class="descname">handle_item</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/core/inputer.html#Inputer.handle_item"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.core.inputer.Inputer.handle_item" title="永久链接至目标">¶</a></dt>
+<dd><p>生成数据的地方，内部要实现一个死循环去产生数据</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fluent.core.inputer.Inputer.handle_item_result">
+<code class="descname">handle_item_result</code><span class="sig-paren">(</span><em>q</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/core/inputer.html#Inputer.handle_item_result"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.core.inputer.Inputer.handle_item_result" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fluent.core.inputer.Inputer.item_wrapper">
+<code class="descname">item_wrapper</code><span class="sig-paren">(</span><em>q</em>, <em>v</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/core/inputer.html#Inputer.item_wrapper"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.core.inputer.Inputer.item_wrapper" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fluent.core.inputer.Inputer.start">
+<code class="descname">start</code><span class="sig-paren">(</span><em>q</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/core/inputer.html#Inputer.start"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.core.inputer.Inputer.start" title="永久链接至目标">¶</a></dt>
+<dd><p>监听队列</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fluent.core.inputer.Inputer.start_threads">
+<code class="descname">start_threads</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/core/inputer.html#Inputer.start_threads"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.core.inputer.Inputer.start_threads" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-fluent.core.outputer">
+<span id="fluent-core-outputer"></span><h2>fluent.core.outputer<a class="headerlink" href="#module-fluent.core.outputer" title="永久链接至标题">¶</a></h2>
+<p>数据出口</p>
+<p>用于将结果输出到外部</p>
+<dl class="class">
+<dt id="fluent.core.outputer.Outputer">
+<em class="property">class </em><code class="descclassname">fluent.core.outputer.</code><code class="descname">Outputer</code><span class="sig-paren">(</span><em>scheduler</em>, <em>conf</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/core/outputer.html#Outputer"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.core.outputer.Outputer" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<a class="reference internal" href="#fluent.core.utils.ThreadSafe" title="fluent.core.utils.ThreadSafe"><code class="xref py py-class docutils literal notranslate"><span class="pre">fluent.core.utils.ThreadSafe</span></code></a>, <a class="reference internal" href="#fluent.core.utils.CatchExceptionHandler" title="fluent.core.utils.CatchExceptionHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">fluent.core.utils.CatchExceptionHandler</span></code></a></p>
+<p>消费数据</p>
+<dl class="attribute">
+<dt id="fluent.core.outputer.Outputer.INTERVAL_DEFAULT">
+<code class="descname">INTERVAL_DEFAULT</code><em class="property"> = 0.001</em><a class="headerlink" href="#fluent.core.outputer.Outputer.INTERVAL_DEFAULT" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="fluent.core.outputer.Outputer.NAME">
+<code class="descname">NAME</code><em class="property"> = 'Outputer'</em><a class="headerlink" href="#fluent.core.outputer.Outputer.NAME" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fluent.core.outputer.Outputer.exit">
+<code class="descname">exit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/core/outputer.html#Outputer.exit"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.core.outputer.Outputer.exit" title="永久链接至目标">¶</a></dt>
+<dd><p>主线程获取退出信号</p>
+<p>多个线程同步设置， 不能简单的使用信号表示线程退出, 超时未推出则强制推出</p>
+<p>抢占当前正在运行程序的信号, 使子线程处于锁定状态</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">参数:</th><td class="field-body"><strong>timeout</strong><strong>(</strong><strong>int</strong><strong>)</strong> – 设置超时时间</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="fluent.core.outputer.Outputer.exit_one_thread">
+<code class="descname">exit_one_thread</code><span class="sig-paren">(</span><em>i</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/core/outputer.html#Outputer.exit_one_thread"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.core.outputer.Outputer.exit_one_thread" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fluent.core.outputer.Outputer.handle_item">
+<code class="descname">handle_item</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/core/outputer.html#Outputer.handle_item"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.core.outputer.Outputer.handle_item" title="永久链接至目标">¶</a></dt>
+<dd><p>将结果输出到外部</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fluent.core.outputer.Outputer.start">
+<code class="descname">start</code><span class="sig-paren">(</span><em>q</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/core/outputer.html#Outputer.start"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.core.outputer.Outputer.start" title="永久链接至目标">¶</a></dt>
+<dd><p>控制流程， 从队列中获取数据，并处理</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fluent.core.outputer.Outputer.start_threads">
+<code class="descname">start_threads</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/core/outputer.html#Outputer.start_threads"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.core.outputer.Outputer.start_threads" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-fluent.core.processor">
+<span id="fluent-core-processor"></span><h2>fluent.core.processor<a class="headerlink" href="#module-fluent.core.processor" title="永久链接至标题">¶</a></h2>
+<p>Processor</p>
+<p>处理数据的主流程
+为了保持input和output对外接口简单实现，内部逻辑均在这里实现</p>
+<dl class="class">
+<dt id="fluent.core.processor.Processor">
+<em class="property">class </em><code class="descclassname">fluent.core.processor.</code><code class="descname">Processor</code><span class="sig-paren">(</span><em>scheduler</em>, <em>conf</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/core/processor.html#Processor"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.core.processor.Processor" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<a class="reference internal" href="#fluent.core.utils.ThreadSafe" title="fluent.core.utils.ThreadSafe"><code class="xref py py-class docutils literal notranslate"><span class="pre">fluent.core.utils.ThreadSafe</span></code></a>, <a class="reference internal" href="#fluent.core.utils.CatchExceptionHandler" title="fluent.core.utils.CatchExceptionHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">fluent.core.utils.CatchExceptionHandler</span></code></a></p>
+<p>处理数据</p>
+<dl class="attribute">
+<dt id="fluent.core.processor.Processor.NAME">
+<code class="descname">NAME</code><em class="property"> = 'Processor'</em><a class="headerlink" href="#fluent.core.processor.Processor.NAME" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fluent.core.processor.Processor.exit">
+<code class="descname">exit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/core/processor.html#Processor.exit"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.core.processor.Processor.exit" title="永久链接至目标">¶</a></dt>
+<dd><p>主线程获取退出信号</p>
+<p>多个线程同步设置， 不能简单的使用信号表示线程退出, 超时未推出则强制推出</p>
+<p>抢占当前正在运行程序的信号, 使子线程处于锁定状态</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">参数:</th><td class="field-body"><strong>timeout</strong><strong>(</strong><strong>int</strong><strong>)</strong> – 设置超时时间</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="fluent.core.processor.Processor.exit_one_thread">
+<code class="descname">exit_one_thread</code><span class="sig-paren">(</span><em>i</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/core/processor.html#Processor.exit_one_thread"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.core.processor.Processor.exit_one_thread" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fluent.core.processor.Processor.item_wrapper">
+<code class="descname">item_wrapper</code><span class="sig-paren">(</span><em>out_q</em>, <em>v</em>, <em>father_span</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/core/processor.html#Processor.item_wrapper"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.core.processor.Processor.item_wrapper" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fluent.core.processor.Processor.put">
+<code class="descname">put</code><span class="sig-paren">(</span><em>flow_item</em>, <em>out_q</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/core/processor.html#Processor.put"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.core.processor.Processor.put" title="永久链接至目标">¶</a></dt>
+<dd><p>如果是一对多关系，则需要重写函数.</p>
+<p>因为从队列中获取到数据涉及到锁的问题，因此不在put函数中获取数据</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">参数:</th><td class="field-body"><ul class="first last simple">
+<li><strong>v</strong> – 从input队列中获取到的数据</li>
+<li><strong>out_q</strong> (<em>queue.Queue</em>) – , 产出队列</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="fluent.core.processor.Processor.start">
+<code class="descname">start</code><span class="sig-paren">(</span><em>int_q</em>, <em>out_q</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/core/processor.html#Processor.start"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.core.processor.Processor.start" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fluent.core.processor.Processor.start_threads">
+<code class="descname">start_threads</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/core/processor.html#Processor.start_threads"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.core.processor.Processor.start_threads" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-fluent.core.utils">
+<span id="fluent-core-utils"></span><h2>fluent.core.utils<a class="headerlink" href="#module-fluent.core.utils" title="永久链接至标题">¶</a></h2>
+<p>工具类</p>
+<dl class="class">
+<dt id="fluent.core.utils.CatchExceptionHandler">
+<em class="property">class </em><code class="descclassname">fluent.core.utils.</code><code class="descname">CatchExceptionHandler</code><a class="reference internal" href="_modules/fluent/core/utils.html#CatchExceptionHandler"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.core.utils.CatchExceptionHandler" title="永久链接至目标">¶</a></dt>
+<dd><p>捕获异常凭输出日志</p>
+<p>捕获每一item处理的异常，并打印出堆栈信息</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">Exception</span></code> – 异常</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="fluent.core.utils.CatchExceptionHandler.handle_item">
+<code class="descname">handle_item</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/core/utils.html#CatchExceptionHandler.handle_item"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.core.utils.CatchExceptionHandler.handle_item" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fluent.core.utils.CatchExceptionHandler.handle_item_debug">
+<code class="descname">handle_item_debug</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/core/utils.html#CatchExceptionHandler.handle_item_debug"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.core.utils.CatchExceptionHandler.handle_item_debug" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="fluent.core.utils.ThreadSafe">
+<em class="property">class </em><code class="descclassname">fluent.core.utils.</code><code class="descname">ThreadSafe</code><span class="sig-paren">(</span><em>scheduler</em>, <em>conf</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/core/utils.html#ThreadSafe"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.core.utils.ThreadSafe" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>线程安全基类</p>
+<dl class="docutils">
+<dt>Attributes</dt>
+<dd>conf: 配置
+threading_counter: 线程数
+rlock: 锁
+EXIT_SIGNAL: 退出信号</dd>
+</dl>
+<dl class="attribute">
+<dt id="fluent.core.utils.ThreadSafe.EXIT_SIGNAL">
+<code class="descname">EXIT_SIGNAL</code><em class="property"> = False</em><a class="headerlink" href="#fluent.core.utils.ThreadSafe.EXIT_SIGNAL" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="fluent.core.utils.ThreadSafe.NAME">
+<code class="descname">NAME</code><em class="property"> = ''</em><a class="headerlink" href="#fluent.core.utils.ThreadSafe.NAME" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fluent.core.utils.ThreadSafe.exit">
+<code class="descname">exit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/core/utils.html#ThreadSafe.exit"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.core.utils.ThreadSafe.exit" title="永久链接至目标">¶</a></dt>
+<dd><p>主线程获取退出信号</p>
+<p>多个线程同步设置， 不能简单的使用信号表示线程退出, 超时未推出则强制推出</p>
+<p>抢占当前正在运行程序的信号, 使子线程处于锁定状态</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">参数:</th><td class="field-body"><strong>timeout</strong><strong>(</strong><strong>int</strong><strong>)</strong> – 设置超时时间</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="fluent.core.utils.ThreadSafe.is_flex_thread_alive">
+<code class="descname">is_flex_thread_alive</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/core/utils.html#ThreadSafe.is_flex_thread_alive"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.core.utils.ThreadSafe.is_flex_thread_alive" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fluent.core.utils.ThreadSafe.report">
+<code class="descname">report</code><span class="sig-paren">(</span><em>begin</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/core/utils.html#ThreadSafe.report"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.core.utils.ThreadSafe.report" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fluent.core.utils.ThreadSafe.start">
+<code class="descname">start</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/core/utils.html#ThreadSafe.start"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.core.utils.ThreadSafe.start" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fluent.core.utils.ThreadSafe.start_one_thread">
+<code class="descname">start_one_thread</code><span class="sig-paren">(</span><em>thread_name</em>, <em>argv</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/core/utils.html#ThreadSafe.start_one_thread"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.core.utils.ThreadSafe.start_one_thread" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="fluent.core.utils.get_class">
+<code class="descclassname">fluent.core.utils.</code><code class="descname">get_class</code><span class="sig-paren">(</span><em>module</em>, <em>parent_class</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/core/utils.html#get_class"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.core.utils.get_class" title="永久链接至目标">¶</a></dt>
+<dd><p>获取模块下继承, 递归获取, 如果有继承关系，会加载最后的子节点类</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">参数:</th><td class="field-body"><ul class="first simple">
+<li><strong>module</strong> (<em>object</em>) – </li>
+<li><strong>parent_class</strong> (<em>cls</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ModuleNotFoundError</span></code> – Not find child class of</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="fluent.core.utils.import_by_abspath">
+<code class="descclassname">fluent.core.utils.</code><code class="descname">import_by_abspath</code><span class="sig-paren">(</span><em>module</em>, <em>abspath</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/core/utils.html#import_by_abspath"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.core.utils.import_by_abspath" title="永久链接至目标">¶</a></dt>
+<dd><p>以绝对路径的方式导入模块</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">参数:</th><td class="field-body"><ul class="first last simple">
+<li><strong>module</strong> – 模块名</li>
+<li><strong>abspath</strong> – 绝对路径</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="fluent.core.utils.import_module">
+<code class="descclassname">fluent.core.utils.</code><code class="descname">import_module</code><span class="sig-paren">(</span><em>directory</em>, <em>filename</em>, <em>parent_class</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/core/utils.html#import_module"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.core.utils.import_module" title="永久链接至目标">¶</a></dt>
+<dd><p>加载job dir下的类</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">参数:</th><td class="field-body"><ul class="first simple">
+<li><strong>directory</strong> (<em>str</em>) – job dir</li>
+<li><strong>filename</strong> (<em>str</em>) – 文件名</li>
+<li><strong>parent_class</strong> (<em>type</em>) – 基类</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">返回:</th><td class="field-body"><p class="first">获取job下的类</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">返回类型:</th><td class="field-body"><p class="first last">class</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-fluent.core">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-fluent.core" title="永久链接至标题">¶</a></h2>
+<p>ETL模块</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="fluent.extensions.html" class="btn btn-neutral float-right" title="fluent.extensions API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="fluent API.html" class="btn btn-neutral float-left" title="fluent API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, zikunchen
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,36 @@
+Welcome to Fluent's documentation!
+===================================
+
+Welcome to Fluent's documentation. Get started with :doc:`/install` and
+then get an overview with the :doc:`/quickstart`.
+
+
+Fluent API
+-----------
+
+.. toctree::
+   :maxdepth: 3
+
+   fluent
+   install
+   quickstart
+   scheduler
+   monitor
+   thread_flex
+   monitor_resource
+   contask
+   config
+   log
+   gevent
+   extensions
+   如何写一个插件
+   fluent API
+   changelog
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`

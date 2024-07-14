@@ -1,0 +1,60 @@
+.. _gevent:
+
+gevent
+=======
+
+gvent设计
+
+gevent引入解决了什么问题
+-----------------------------
+
+
+gevent如何使用
+-----------------------
+
+
+
+gevent带来了什么问题
+------------------------
+
+
+
+.. note::
+
+    使用gevent的最大问题是在运行的过程中，会有不可预期的block， 主要是以下三种情况导致的
+
+    #. 第三方模块使用了sleep
+    #. 使用了C lib, C lib中的socket, 或者线程没有被monkey patch
+    #. 开启了线程
+
+
+.. attention::
+
+    gevent踩坑指南
+
+    1. 使用sleep带来的问题
+
+    .. code-block:: python
+
+        # sleep
+        from fluent.utils import sleep
+        sleep(1)
+
+
+
+
+
+
+    2. 使用confluent_kafka带来的阻塞问题，使用以下方式解决
+
+    .. code-block:: python
+
+        # 使用confluent-kafka遇到的问题,需要采用以下方式，否则会导致其他greenlet被阻塞
+        from confluent_kafka.cimpl import Consumer, KafkaError
+
+        if _global.GEVENT:
+            msg = self._client.poll(0)
+            sleep(self.kafka_timeout)
+        else:
+            msg = self._client.poll(self.kafka_timeout)
+

@@ -1,0 +1,312 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>fluent.extensions.monitor &mdash; fluent  文档</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script type="text/javascript" src="../../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> fluent
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../fluent.html">fluent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Install fluent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../scheduler.html">scheduler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../monitor.html">monitor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../thread_flex.html">thread_flex</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../monitor_resource.html">monitor_resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contask.html">crontask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../config.html">config文件的使用方式</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../log.html">fluent log 设计原则</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gevent.html">gevent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../extensions.html">extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../如何写一个插件.html">如何写一个插件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fluent API.html">fluent API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">fluent</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">模块代码</a> &raquo;</li>
+        
+      <li>fluent.extensions.monitor</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>fluent.extensions.monitor 源代码</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;监控模块， 单线程</span>
+<span class="sd"># todo 增加监控</span>
+<span class="sd"># 1. 通过监控两个队列的长度来判断处理流程的瓶颈在哪里, 前提条件是队列有一定的长度 done</span>
+<span class="sd"># 2. 通过监控process处理速度来判断整体进度 done</span>
+<span class="sd"># 3. 记录每个程序，消耗的时间</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+
+<span class="kn">from</span> <span class="nn">fluent.utils</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="kn">from</span> <span class="nn">..abcmeta</span> <span class="kn">import</span> <span class="n">ExtensionABC</span>
+<span class="kn">from</span> <span class="nn">..ctx</span> <span class="kn">import</span> <span class="n">register_flow</span>
+
+<span class="n">MonitorEnum</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;MonitorEnum&quot;</span><span class="p">,</span> <span class="s2">&quot;used_rate in_counter out_counter&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="MonitorQueue"><a class="viewcode-back" href="../../../fluent.extensions.html#fluent.extensions.monitor.MonitorQueue">[文档]</a><span class="k">class</span> <span class="nc">MonitorQueue</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;对队列数据的监控</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        q(CounterQueue): 被监控的队列</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">NAME</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q</span> <span class="o">=</span> <span class="n">q</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_in</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_out</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="MonitorQueue.used_rate"><a class="viewcode-back" href="../../../fluent.extensions.html#fluent.extensions.monitor.MonitorQueue.used_rate">[文档]</a>    <span class="k">def</span> <span class="nf">used_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;记录队列使用比例，可以观测是否某个流程在阻塞&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="o">.</span><span class="n">qsize</span><span class="p">()</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="o">.</span><span class="n">maxsize</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MonitorQueue.in_counter"><a class="viewcode-back" href="../../../fluent.extensions.html#fluent.extensions.monitor.MonitorQueue.in_counter">[文档]</a>    <span class="k">def</span> <span class="nf">in_counter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;记录某个瞬间counter值&quot;&quot;&quot;</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="o">.</span><span class="n">in_counter</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_in</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_in</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="o">.</span><span class="n">in_counter</span>
+        <span class="k">return</span> <span class="n">count</span></div>
+
+<div class="viewcode-block" id="MonitorQueue.out_counter"><a class="viewcode-back" href="../../../fluent.extensions.html#fluent.extensions.monitor.MonitorQueue.out_counter">[文档]</a>    <span class="k">def</span> <span class="nf">out_counter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="o">.</span><span class="n">out_counter</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_out</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="o">.</span><span class="n">out_counter</span>
+        <span class="k">return</span> <span class="n">count</span></div></div>
+
+
+<div class="viewcode-block" id="InputQueueMonitor"><a class="viewcode-back" href="../../../fluent.extensions.html#fluent.extensions.monitor.InputQueueMonitor">[文档]</a><span class="k">class</span> <span class="nc">InputQueueMonitor</span><span class="p">(</span><span class="n">MonitorQueue</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;监控入口&quot;&quot;&quot;</span>
+    <span class="n">NAME</span> <span class="o">=</span> <span class="s2">&quot;input_q&quot;</span></div>
+
+
+<div class="viewcode-block" id="OutputQueueMonitor"><a class="viewcode-back" href="../../../fluent.extensions.html#fluent.extensions.monitor.OutputQueueMonitor">[文档]</a><span class="k">class</span> <span class="nc">OutputQueueMonitor</span><span class="p">(</span><span class="n">MonitorQueue</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;监控出口&quot;&quot;&quot;</span>
+    <span class="n">NAME</span> <span class="o">=</span> <span class="s2">&quot;output_q&quot;</span></div>
+
+
+<span class="nd">@register_flow</span><span class="p">(</span><span class="s1">&#39;monitor&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Monitor</span><span class="p">(</span><span class="n">ExtensionABC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;监控器，单线程</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        monitor_items(OutputQueueMonitor):</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        scheduler(Scheduler)</span>
+<span class="sd">        conf: 配置项</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">EXIT_SIGNAL</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scheduler</span><span class="p">,</span> <span class="n">conf</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conf</span> <span class="o">=</span> <span class="n">conf</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">monitor_items</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">InputQueueMonitor</span><span class="p">(</span><span class="n">scheduler</span><span class="o">.</span><span class="n">q_of_inputer_processor</span><span class="p">),</span> <span class="n">OutputQueueMonitor</span><span class="p">(</span><span class="n">scheduler</span><span class="o">.</span><span class="n">q_of_processor_outputer</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span> <span class="o">=</span> <span class="n">scheduler</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">measurement</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;measurement&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interval_second</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;interval&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rlock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">monitor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;获取监控数据并发送数据&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">monitor_items</span><span class="p">:</span>
+            <span class="n">fields_map</span> <span class="o">=</span> <span class="p">{</span><span class="n">field</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">field</span><span class="p">)()</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">MonitorEnum</span><span class="o">.</span><span class="n">_fields</span><span class="p">}</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;item: </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">NAME</span><span class="p">,</span> <span class="n">fields_map</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">reporter</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">measurement</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">NAME</span><span class="p">,</span> <span class="n">fields_map</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_interval</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;监控的频率&quot;&quot;&quot;</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">interval_second</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;在独立的线程中启动monitor, 由scheduler去控制&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rlock</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">EXIT_SIGNAL</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_interval</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">monitor</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rlock</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">exit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;退出monitor&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">EXIT_SIGNAL</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="c1"># self.rlock.acquire()</span>
+        <span class="c1"># self.rlock.release()</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, zikunchen
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

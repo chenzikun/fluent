@@ -1,0 +1,349 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>fluent.log &mdash; fluent  文档</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script type="text/javascript" src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> fluent
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../fluent.html">fluent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Install fluent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../scheduler.html">scheduler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitor.html">monitor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../thread_flex.html">thread_flex</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitor_resource.html">monitor_resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contask.html">crontask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config.html">config文件的使用方式</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../log.html">fluent log 设计原则</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gevent.html">gevent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extensions.html">extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../如何写一个插件.html">如何写一个插件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fluent API.html">fluent API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">fluent</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">模块代码</a> &raquo;</li>
+        
+      <li>fluent.log</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>fluent.log 源代码</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;logger处理， 设置logger配置</span>
+
+<span class="sd">只有set_logger提供给外部使用</span>
+
+<span class="sd">Todo:</span>
+<span class="sd">    将rotate maxBytes改造成配置文件</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">fluent</span> <span class="kn">import</span> <span class="n">_global</span>
+<span class="n">get_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span>
+
+<span class="n">_LOG</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<div class="viewcode-block" id="set_logger"><a class="viewcode-back" href="../../fluent API.html#fluent.log.set_logger">[文档]</a><span class="k">def</span> <span class="nf">set_logger</span><span class="p">(</span><span class="n">conf</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;设置日志, 将内置日志logging.getLogger替换成Logger</span>
+
+<span class="sd">    Examples:</span>
+
+<span class="sd">        &gt;&gt;&gt; import logging</span>
+<span class="sd">        &gt;&gt;&gt; logging.info(&#39;&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">_LOG</span>
+    <span class="n">logging_conf</span> <span class="o">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;logging&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">logging_conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fluent_log&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="n">_LOG</span> <span class="o">=</span> <span class="n">Logger</span><span class="p">(</span><span class="n">logging_conf</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">_LOG</span><span class="o">.</span><span class="n">rotate</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span> <span class="o">=</span> <span class="n">_LOG</span><span class="o">.</span><span class="n">get_rotating_logger</span>
+            <span class="n">_LOG</span><span class="o">.</span><span class="n">get_rotating_logger</span><span class="p">(</span><span class="s1">&#39;fluent&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span> <span class="o">=</span> <span class="n">_LOG</span><span class="o">.</span><span class="n">get_logger</span>
+            <span class="n">_LOG</span><span class="o">.</span><span class="n">get_logger</span><span class="p">(</span><span class="s1">&#39;fluent&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Logger"><a class="viewcode-back" href="../../fluent API.html#fluent.log.Logger">[文档]</a><span class="k">class</span> <span class="nc">Logger</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;日志配置</span>
+
+<span class="sd">    支持定制化配置format, level, fileHandler, rotateFileHandler</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        conf: 日志配置</span>
+<span class="sd">        logging_conf: 用于设置BasicConf的配置</span>
+
+<span class="sd">    Methods:</span>
+<span class="sd">        set_level: 设置日志级别</span>
+<span class="sd">        set_format: 设置日志format</span>
+<span class="sd">        set_file: 设置文件， 如果handler是fileHandler或者rotateFileHandler</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">DEFAULT_LEVEL</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span>
+    <span class="n">DEFAULT_FORMAT</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="si">%(asctime)s</span><span class="s2"> - </span><span class="si">%(processName)s</span><span class="s2"> - </span><span class="si">%(threadName)s</span><span class="s2"> - </span><span class="si">%(filename)s</span><span class="s2"> - </span><span class="si">%(funcName)s</span><span class="s2"> - [line:</span><span class="si">%(lineno)d</span><span class="s2">] - </span><span class="si">%(levelname)s</span><span class="s2">: </span><span class="si">%(message)s</span><span class="s2">&quot;&quot;&quot;</span>
+    <span class="n">DEFAULT_MAX_BYTES</span> <span class="o">=</span> <span class="mi">500</span>  <span class="c1"># unit MB</span>
+    <span class="n">DEFAULT_BACKUP_COUNT</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="n">_logger</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conf</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            conf: 配置文件</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">conf</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">conf</span> <span class="o">=</span> <span class="n">conf</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logging_conf</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_level</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_format</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_file</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rotate_handler</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rotate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;rotate&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Logger.set_level"><a class="viewcode-back" href="../../fluent API.html#fluent.log.Logger.set_level">[文档]</a>    <span class="k">def</span> <span class="nf">set_level</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">level</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;level&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">level</span><span class="p">:</span>
+            <span class="n">level</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">logging</span><span class="p">,</span> <span class="n">level</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logging_conf</span><span class="p">[</span><span class="s2">&quot;level&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">level</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logging_conf</span><span class="p">[</span><span class="s2">&quot;level&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_LEVEL</span></div>
+
+<div class="viewcode-block" id="Logger.set_format"><a class="viewcode-back" href="../../fluent API.html#fluent.log.Logger.set_format">[文档]</a>    <span class="k">def</span> <span class="nf">set_format</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">format_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;format&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_FORMAT</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logging_conf</span><span class="p">[</span><span class="s2">&quot;format&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">format_</span></div>
+
+<div class="viewcode-block" id="Logger.set_file"><a class="viewcode-back" href="../../fluent API.html#fluent.log.Logger.set_file">[文档]</a>    <span class="k">def</span> <span class="nf">set_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;filename&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logging_conf</span><span class="p">[</span><span class="s2">&quot;filename&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span></div>
+
+<div class="viewcode-block" id="Logger.replace_logging"><a class="viewcode-back" href="../../fluent API.html#fluent.log.Logger.replace_logging">[文档]</a>    <span class="k">def</span> <span class="nf">replace_logging</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">warning</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">warning</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">error</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">critical</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">critical</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">exception</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">exception</span></div>
+
+<div class="viewcode-block" id="Logger.get_formater"><a class="viewcode-back" href="../../fluent API.html#fluent.log.Logger.get_formater">[文档]</a>    <span class="k">def</span> <span class="nf">get_formater</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">format_str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">logging_conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;format&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">_global</span><span class="o">.</span><span class="n">GEVENT</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">._gevent</span> <span class="kn">import</span> <span class="n">GeventFomartter</span>
+            <span class="n">formatter</span> <span class="o">=</span> <span class="n">GeventFomartter</span><span class="p">(</span><span class="n">format_str</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="n">format_str</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">formatter</span></div>
+
+<div class="viewcode-block" id="Logger.get_logger"><a class="viewcode-back" href="../../fluent API.html#fluent.log.Logger.get_logger">[文档]</a>    <span class="k">def</span> <span class="nf">get_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotate</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">_global</span><span class="o">.</span><span class="n">GEVENT</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
+                <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">logging_conf</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">get_logger</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span>
+            <span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">:</span>
+                <span class="n">hl</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">hl</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">()</span>
+            <span class="n">hl</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_formater</span><span class="p">())</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">hl</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logging_conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;level&quot;</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span> <span class="o">=</span> <span class="n">logger</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">replace_logging</span><span class="p">()</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span></div>
+
+<div class="viewcode-block" id="Logger.get_rotating_logger"><a class="viewcode-back" href="../../fluent API.html#fluent.log.Logger.get_rotating_logger">[文档]</a>    <span class="k">def</span> <span class="nf">get_rotating_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span>
+        <span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="kn">from</span> <span class="nn">logging.handlers</span> <span class="kn">import</span> <span class="n">RotatingFileHandler</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotate</span><span class="p">:</span>
+            <span class="n">MB</span> <span class="o">=</span> <span class="mi">1000</span> <span class="o">*</span> <span class="mi">1000</span>
+            <span class="n">maxBytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;maxMB&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_MAX_BYTES</span><span class="p">)</span> <span class="o">*</span> <span class="n">MB</span>
+            <span class="n">backupCount</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;backupCount&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_BACKUP_COUNT</span><span class="p">)</span>
+            <span class="n">rotate_handler</span> <span class="o">=</span> <span class="n">RotatingFileHandler</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">maxBytes</span><span class="o">=</span><span class="n">maxBytes</span><span class="p">,</span> <span class="n">backupCount</span><span class="o">=</span><span class="n">backupCount</span>
+            <span class="p">)</span>
+            <span class="n">formatter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_formater</span><span class="p">()</span>
+            <span class="n">rotate_handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">propagate</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">rotate_handler</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logging_conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;level&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span> <span class="o">=</span> <span class="n">logger</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">replace_logging</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, zikunchen
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

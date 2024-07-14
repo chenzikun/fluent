@@ -1,0 +1,461 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>fluent.extensions API &mdash; fluent  文档</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script type="text/javascript" src="_static/translations.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="prev" title="fluent.core API" href="fluent.core.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> fluent
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="fluent.html">fluent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install fluent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scheduler.html">scheduler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitor.html">monitor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="thread_flex.html">thread_flex</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitor_resource.html">monitor_resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contask.html">crontask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">config文件的使用方式</a></li>
+<li class="toctree-l1"><a class="reference internal" href="log.html">fluent log 设计原则</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gevent.html">gevent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions.html">extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="如何写一个插件.html">如何写一个插件</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="fluent API.html">fluent API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="fluent API.html#fluent-core">fluent.core</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="fluent API.html#fluent-extensions">fluent.extensions</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">fluent.extensions API</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#module-fluent.extensions.monitor">fluent.extensions.monitor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-fluent.extensions.monitor_resource">fluent.extensions.monitor_resource</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-fluent.extensions.thread_flex">fluent.extensions.thread_flex</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-fluent.extensions">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="fluent API.html#module-fluent.scheduler">fluent.scheduler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fluent API.html#module-fluent.cli">fluent.cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fluent API.html#module-fluent.log">fluent.log</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fluent API.html#module-fluent.model">fluent.model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fluent API.html#module-fluent.reporter">fluent.reporter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fluent API.html#module-fluent._global">fluent._global</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fluent API.html#module-fluent">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">fluent</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="fluent API.html">fluent API</a> &raquo;</li>
+        
+      <li>fluent.extensions API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/fluent.extensions.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="fluent-extensions-api">
+<h1>fluent.extensions API<a class="headerlink" href="#fluent-extensions-api" title="永久链接至标题">¶</a></h1>
+<div class="section" id="module-fluent.extensions.monitor">
+<span id="fluent-extensions-monitor"></span><h2>fluent.extensions.monitor<a class="headerlink" href="#module-fluent.extensions.monitor" title="永久链接至标题">¶</a></h2>
+<p>监控模块， 单线程
+# todo 增加监控
+# 1. 通过监控两个队列的长度来判断处理流程的瓶颈在哪里, 前提条件是队列有一定的长度 done
+# 2. 通过监控process处理速度来判断整体进度 done
+# 3. 记录每个程序，消耗的时间</p>
+<dl class="class">
+<dt id="fluent.extensions.monitor.InputQueueMonitor">
+<em class="property">class </em><code class="descclassname">fluent.extensions.monitor.</code><code class="descname">InputQueueMonitor</code><span class="sig-paren">(</span><em>q</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/extensions/monitor.html#InputQueueMonitor"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.extensions.monitor.InputQueueMonitor" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<a class="reference internal" href="#fluent.extensions.monitor.MonitorQueue" title="fluent.extensions.monitor.MonitorQueue"><code class="xref py py-class docutils literal notranslate"><span class="pre">fluent.extensions.monitor.MonitorQueue</span></code></a></p>
+<p>监控入口</p>
+<dl class="attribute">
+<dt id="fluent.extensions.monitor.InputQueueMonitor.NAME">
+<code class="descname">NAME</code><em class="property"> = 'input_q'</em><a class="headerlink" href="#fluent.extensions.monitor.InputQueueMonitor.NAME" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="fluent.extensions.monitor.MonitorEnum">
+<em class="property">class </em><code class="descclassname">fluent.extensions.monitor.</code><code class="descname">MonitorEnum</code><span class="sig-paren">(</span><em>used_rate</em>, <em>in_counter</em>, <em>out_counter</em><span class="sig-paren">)</span><a class="headerlink" href="#fluent.extensions.monitor.MonitorEnum" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
+<dl class="attribute">
+<dt id="fluent.extensions.monitor.MonitorEnum.in_counter">
+<code class="descname">in_counter</code><a class="headerlink" href="#fluent.extensions.monitor.MonitorEnum.in_counter" title="永久链接至目标">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="fluent.extensions.monitor.MonitorEnum.out_counter">
+<code class="descname">out_counter</code><a class="headerlink" href="#fluent.extensions.monitor.MonitorEnum.out_counter" title="永久链接至目标">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="fluent.extensions.monitor.MonitorEnum.used_rate">
+<code class="descname">used_rate</code><a class="headerlink" href="#fluent.extensions.monitor.MonitorEnum.used_rate" title="永久链接至目标">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="fluent.extensions.monitor.MonitorQueue">
+<em class="property">class </em><code class="descclassname">fluent.extensions.monitor.</code><code class="descname">MonitorQueue</code><span class="sig-paren">(</span><em>q</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/extensions/monitor.html#MonitorQueue"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.extensions.monitor.MonitorQueue" title="永久链接至目标">¶</a></dt>
+<dd><p>对队列数据的监控</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">参数:</th><td class="field-body"><strong>q</strong> (<em>CounterQueue</em>) – 被监控的队列</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="fluent.extensions.monitor.MonitorQueue.NAME">
+<code class="descname">NAME</code><em class="property"> = ''</em><a class="headerlink" href="#fluent.extensions.monitor.MonitorQueue.NAME" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fluent.extensions.monitor.MonitorQueue.in_counter">
+<code class="descname">in_counter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/extensions/monitor.html#MonitorQueue.in_counter"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.extensions.monitor.MonitorQueue.in_counter" title="永久链接至目标">¶</a></dt>
+<dd><p>记录某个瞬间counter值</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fluent.extensions.monitor.MonitorQueue.out_counter">
+<code class="descname">out_counter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/extensions/monitor.html#MonitorQueue.out_counter"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.extensions.monitor.MonitorQueue.out_counter" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fluent.extensions.monitor.MonitorQueue.used_rate">
+<code class="descname">used_rate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/extensions/monitor.html#MonitorQueue.used_rate"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.extensions.monitor.MonitorQueue.used_rate" title="永久链接至目标">¶</a></dt>
+<dd><p>记录队列使用比例，可以观测是否某个流程在阻塞</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="fluent.extensions.monitor.OutputQueueMonitor">
+<em class="property">class </em><code class="descclassname">fluent.extensions.monitor.</code><code class="descname">OutputQueueMonitor</code><span class="sig-paren">(</span><em>q</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/extensions/monitor.html#OutputQueueMonitor"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.extensions.monitor.OutputQueueMonitor" title="永久链接至目标">¶</a></dt>
+<dd><p>基类：<a class="reference internal" href="#fluent.extensions.monitor.MonitorQueue" title="fluent.extensions.monitor.MonitorQueue"><code class="xref py py-class docutils literal notranslate"><span class="pre">fluent.extensions.monitor.MonitorQueue</span></code></a></p>
+<p>监控出口</p>
+<dl class="attribute">
+<dt id="fluent.extensions.monitor.OutputQueueMonitor.NAME">
+<code class="descname">NAME</code><em class="property"> = 'output_q'</em><a class="headerlink" href="#fluent.extensions.monitor.OutputQueueMonitor.NAME" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-fluent.extensions.monitor_resource">
+<span id="fluent-extensions-monitor-resource"></span><h2>fluent.extensions.monitor_resource<a class="headerlink" href="#module-fluent.extensions.monitor_resource" title="永久链接至标题">¶</a></h2>
+</div>
+<hr class="docutils" />
+<div class="section" id="module-fluent.extensions.thread_flex">
+<span id="fluent-extensions-thread-flex"></span><h2>fluent.extensions.thread_flex<a class="headerlink" href="#module-fluent.extensions.thread_flex" title="永久链接至标题">¶</a></h2>
+<p>监控模块， 单线程
+# todo 增加监控
+# 1. 通过监控两个队列的长度来判断处理流程的瓶颈在哪里, 前提条件是队列有一定的长度 done
+# 2. 通过监控process处理速度来判断整体进度 done
+# 3. 记录每个程序，消耗的时间</p>
+<dl class="class">
+<dt id="fluent.extensions.thread_flex.FlexMethod">
+<em class="property">class </em><code class="descclassname">fluent.extensions.thread_flex.</code><code class="descname">FlexMethod</code><a class="reference internal" href="_modules/fluent/extensions/thread_flex.html#FlexMethod"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.extensions.thread_flex.FlexMethod" title="永久链接至目标">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="fluent.extensions.thread_flex.FlexMethod.add">
+<code class="descname">add</code><em class="property"> = 0</em><a class="headerlink" href="#fluent.extensions.thread_flex.FlexMethod.add" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="fluent.extensions.thread_flex.FlexMethod.reduce">
+<code class="descname">reduce</code><em class="property"> = 1</em><a class="headerlink" href="#fluent.extensions.thread_flex.FlexMethod.reduce" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="fluent.extensions.thread_flex.FlowThreadNumberManager">
+<em class="property">class </em><code class="descclassname">fluent.extensions.thread_flex.</code><code class="descname">FlowThreadNumberManager</code><span class="sig-paren">(</span><em>flow</em>, <em>flex_max_rate</em>, <em>flex_step_rate</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/extensions/thread_flex.html#FlowThreadNumberManager"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.extensions.thread_flex.FlowThreadNumberManager" title="永久链接至目标">¶</a></dt>
+<dd><p>etl flow线程管理器</p>
+<dl class="attribute">
+<dt id="fluent.extensions.thread_flex.FlowThreadNumberManager.flow">
+<code class="descname">flow</code><a class="headerlink" href="#fluent.extensions.thread_flex.FlowThreadNumberManager.flow" title="永久链接至目标">¶</a></dt>
+<dd><p>etl flow</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="fluent.extensions.thread_flex.FlowThreadNumberManager.base_number">
+<code class="descname">base_number</code><a class="headerlink" href="#fluent.extensions.thread_flex.FlowThreadNumberManager.base_number" title="永久链接至目标">¶</a></dt>
+<dd><p>基础配置线程数</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">max_number： 最大线程数</code></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="fluent.extensions.thread_flex.FlowThreadNumberManager.flex_step">
+<code class="descname">flex_step</code><a class="headerlink" href="#fluent.extensions.thread_flex.FlowThreadNumberManager.flex_step" title="永久链接至目标">¶</a></dt>
+<dd><p>线程弹性伸缩值</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fluent.extensions.thread_flex.FlowThreadNumberManager.add">
+<code class="descname">add</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/extensions/thread_flex.html#FlowThreadNumberManager.add"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.extensions.thread_flex.FlowThreadNumberManager.add" title="永久链接至目标">¶</a></dt>
+<dd><p>减少线程</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fluent.extensions.thread_flex.FlowThreadNumberManager.collect_mem">
+<code class="descname">collect_mem</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/extensions/thread_flex.html#FlowThreadNumberManager.collect_mem"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.extensions.thread_flex.FlowThreadNumberManager.collect_mem" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fluent.extensions.thread_flex.FlowThreadNumberManager.get_add_flex_step">
+<code class="descname">get_add_flex_step</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/extensions/thread_flex.html#FlowThreadNumberManager.get_add_flex_step"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.extensions.thread_flex.FlowThreadNumberManager.get_add_flex_step" title="永久链接至目标">¶</a></dt>
+<dd><p>获取单次增加线程量</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fluent.extensions.thread_flex.FlowThreadNumberManager.get_reduce_flex_step">
+<code class="descname">get_reduce_flex_step</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/extensions/thread_flex.html#FlowThreadNumberManager.get_reduce_flex_step"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.extensions.thread_flex.FlowThreadNumberManager.get_reduce_flex_step" title="永久链接至目标">¶</a></dt>
+<dd><p>获取单次减少线程量</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fluent.extensions.thread_flex.FlowThreadNumberManager.is_larger_than_base">
+<code class="descname">is_larger_than_base</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/extensions/thread_flex.html#FlowThreadNumberManager.is_larger_than_base"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.extensions.thread_flex.FlowThreadNumberManager.is_larger_than_base" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fluent.extensions.thread_flex.FlowThreadNumberManager.is_less_than_max_number">
+<code class="descname">is_less_than_max_number</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/extensions/thread_flex.html#FlowThreadNumberManager.is_less_than_max_number"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.extensions.thread_flex.FlowThreadNumberManager.is_less_than_max_number" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fluent.extensions.thread_flex.FlowThreadNumberManager.reduce">
+<code class="descname">reduce</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/extensions/thread_flex.html#FlowThreadNumberManager.reduce"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.extensions.thread_flex.FlowThreadNumberManager.reduce" title="永久链接至目标">¶</a></dt>
+<dd><p>增加线程</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="fluent.extensions.thread_flex.ThreadFlexQueue">
+<em class="property">class </em><code class="descclassname">fluent.extensions.thread_flex.</code><code class="descname">ThreadFlexQueue</code><span class="sig-paren">(</span><em>q</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/extensions/thread_flex.html#ThreadFlexQueue"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.extensions.thread_flex.ThreadFlexQueue" title="永久链接至目标">¶</a></dt>
+<dd><p>对队列数据的监控</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">参数:</th><td class="field-body"><strong>q</strong> (<em>queue.Queue</em>) – 被监控的队列</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="fluent.extensions.thread_flex.ThreadFlexQueue.NAME">
+<code class="descname">NAME</code><em class="property"> = ''</em><a class="headerlink" href="#fluent.extensions.thread_flex.ThreadFlexQueue.NAME" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fluent.extensions.thread_flex.ThreadFlexQueue.is_higher_state">
+<code class="descname">is_higher_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/extensions/thread_flex.html#ThreadFlexQueue.is_higher_state"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.extensions.thread_flex.ThreadFlexQueue.is_higher_state" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fluent.extensions.thread_flex.ThreadFlexQueue.is_lower_state">
+<code class="descname">is_lower_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/extensions/thread_flex.html#ThreadFlexQueue.is_lower_state"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.extensions.thread_flex.ThreadFlexQueue.is_lower_state" title="永久链接至目标">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fluent.extensions.thread_flex.ThreadFlexQueue.used_rate">
+<code class="descname">used_rate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fluent/extensions/thread_flex.html#ThreadFlexQueue.used_rate"><span class="viewcode-link">[源代码]</span></a><a class="headerlink" href="#fluent.extensions.thread_flex.ThreadFlexQueue.used_rate" title="永久链接至目标">¶</a></dt>
+<dd><p>记录队列使用比例，可以观测是否某个流程在阻塞</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-fluent.extensions">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-fluent.extensions" title="永久链接至标题">¶</a></h2>
+<p>插件模块</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="fluent.core.html" class="btn btn-neutral float-left" title="fluent.core API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, zikunchen
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

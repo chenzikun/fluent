@@ -1,0 +1,19 @@
+.. _crontask:
+
+crontask
+=========
+
+定时任务
+----------
+
+配置定时任务
+
+.. code-block:: python
+    :caption: ``crontask.py``
+
+    from fluent._global import CRON_TASK
+
+    CRON_TASK.add_job(reset_modify_time, trigger='cron', year='*', month='*', day='*', hour='0')
+
+
+启动程序

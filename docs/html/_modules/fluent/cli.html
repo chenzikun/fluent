@@ -1,0 +1,360 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>fluent.cli &mdash; fluent  文档</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script type="text/javascript" src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> fluent
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../fluent.html">fluent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Install fluent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../scheduler.html">scheduler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitor.html">monitor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../thread_flex.html">thread_flex</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitor_resource.html">monitor_resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contask.html">crontask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../config.html">config文件的使用方式</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../log.html">fluent log 设计原则</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gevent.html">gevent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extensions.html">extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../如何写一个插件.html">如何写一个插件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fluent API.html">fluent API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">fluent</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">模块代码</a> &raquo;</li>
+        
+      <li>fluent.cli</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>fluent.cli 源代码</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;命令行</span>
+
+<span class="sd">1. 参数管理</span>
+<span class="sd">2. job模块加载</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">import</span> <span class="nn">click</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+
+<span class="kn">from</span> <span class="nn">fluent.core.utils</span> <span class="kn">import</span> <span class="n">import_by_abspath</span>
+<span class="kn">from</span> <span class="nn">fluent.model</span> <span class="kn">import</span> <span class="n">Extra</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_global</span>
+<span class="kn">from</span> <span class="nn">.log</span> <span class="kn">import</span> <span class="n">set_logger</span>
+
+
+<div class="viewcode-block" id="get_conf"><a class="viewcode-back" href="../../fluent API.html#fluent.cli.get_conf">[文档]</a><span class="k">def</span> <span class="nf">get_conf</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;加载配置文件</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        filepath:</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: conf配置文件</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">FullLoader</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="extract_worker_dir"><a class="viewcode-back" href="../../fluent API.html#fluent.cli.extract_worker_dir">[文档]</a><span class="k">def</span> <span class="nf">extract_worker_dir</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;解析worker文件夹</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        directory (str): 工作目录文件夹</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: a list of Producer, shuffler, Consumer</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">.core.utils</span> <span class="kn">import</span> <span class="n">import_module</span>
+
+    <span class="c1"># 将当前工作空间加入到sys.path</span>
+    <span class="n">pwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pwd</span><span class="p">)</span>
+    <span class="kn">from</span> <span class="nn">.core</span> <span class="kn">import</span> <span class="n">Inputer</span><span class="p">,</span> <span class="n">Processor</span><span class="p">,</span> <span class="n">Outputer</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="s1">&#39;__init__.py&#39;</span><span class="p">)):</span>
+        <span class="n">import_by_abspath</span><span class="p">(</span><span class="s1">&#39;init&#39;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="s1">&#39;__init__.py&#39;</span><span class="p">))</span>
+    <span class="n">inputer</span> <span class="o">=</span> <span class="n">import_module</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="s2">&quot;input.py&quot;</span><span class="p">,</span> <span class="n">Inputer</span><span class="p">)</span>
+    <span class="n">processor</span> <span class="o">=</span> <span class="n">import_module</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="s2">&quot;process.py&quot;</span><span class="p">,</span> <span class="n">Processor</span><span class="p">)</span>
+    <span class="n">outputer</span> <span class="o">=</span> <span class="n">import_module</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="s2">&quot;output.py&quot;</span><span class="p">,</span> <span class="n">Outputer</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">inputer</span><span class="p">,</span> <span class="n">processor</span><span class="p">,</span> <span class="n">outputer</span></div>
+
+
+<div class="viewcode-block" id="load_module_after_init"><a class="viewcode-back" href="../../fluent API.html#fluent.cli.load_module_after_init">[文档]</a><span class="k">def</span> <span class="nf">load_module_after_init</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;有些任务是依赖_global里的数据，这里通常是在服务启动之后设置的&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="s1">&#39;crontask.py&#39;</span><span class="p">)):</span>
+        <span class="n">import_by_abspath</span><span class="p">(</span><span class="s1">&#39;crontask&#39;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="s1">&#39;crontask.py&#39;</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="go"><a class="viewcode-back" href="../../fluent API.html#fluent.cli.go">[文档]</a><span class="k">def</span> <span class="nf">go</span><span class="p">(</span><span class="n">task_dir</span><span class="p">,</span> <span class="n">debug</span><span class="p">):</span>
+    <span class="n">con_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">task_dir</span><span class="p">,</span> <span class="s2">&quot;config.yaml&quot;</span><span class="p">)</span>
+    <span class="n">conf</span> <span class="o">=</span> <span class="n">get_conf</span><span class="p">(</span><span class="n">con_file</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s1">&#39;gevent&#39;</span> <span class="ow">in</span> <span class="n">conf</span> <span class="ow">and</span> <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;gevent&#39;</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">gevent</span> <span class="kn">import</span> <span class="n">monkey</span>
+        <span class="n">monkey</span><span class="o">.</span><span class="n">patch_all</span><span class="p">()</span>
+        <span class="n">_global</span><span class="o">.</span><span class="n">GEVENT</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">task_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">task_dir</span><span class="p">)</span>
+    <span class="n">set_logger</span><span class="p">(</span><span class="n">conf</span><span class="p">)</span>
+    <span class="n">p</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">extract_worker_dir</span><span class="p">(</span><span class="n">task_dir</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;fluent start!&quot;</span><span class="p">)</span>
+    <span class="kn">from</span> <span class="nn">.scheduler</span> <span class="kn">import</span> <span class="n">Scheduler</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">Scheduler</span><span class="p">(</span><span class="n">conf</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">task_name</span><span class="o">=</span><span class="n">task_name</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="n">debug</span><span class="p">)</span>
+    <span class="n">_global</span><span class="o">.</span><span class="n">SCHEDULER</span> <span class="o">=</span> <span class="n">m</span>
+    <span class="n">load_module_after_init</span><span class="p">(</span><span class="n">task_dir</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;fluent exit!&quot;</span><span class="p">)</span></div>
+
+
+<span class="nd">@click</span><span class="o">.</span><span class="n">group</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="k">pass</span>
+
+
+<span class="nd">@click</span><span class="o">.</span><span class="n">group</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">stop</span><span class="p">():</span>
+    <span class="k">pass</span>
+
+
+<span class="nd">@main</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">context_settings</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">ignore_unknown_options</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">argument</span><span class="p">(</span><span class="s1">&#39;task&#39;</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;--extra&#39;</span><span class="p">,</span> <span class="s1">&#39;-e&#39;</span><span class="p">,</span>
+              <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+              <span class="n">help</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                    the argument you wish pass to fluent, for example:</span>
+<span class="s2">                    --extra k1=v1,k2=v2</span>
+<span class="s2">                    for using it:</span>
+<span class="s2">                    ```</span>
+<span class="s2">                    from fluent._global import EXTRA </span>
+<span class="s2">                    v1 = EXTRA.k1</span>
+<span class="s2">                    ```</span>
+<span class="s2">                    如果设置了env, 则会将_global.ENV改写为env, 目的是上报的数据做区分</span>
+<span class="s2">                    &quot;&quot;&quot;</span>
+              <span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;--worker_name&#39;</span><span class="p">,</span> <span class="s1">&#39;-w&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;worker name, use in report tag&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span>
+    <span class="s1">&#39;--debug&#39;</span><span class="p">,</span> <span class="s1">&#39;-d&#39;</span><span class="p">,</span>
+    <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    是否开启debug模式， 如果开启debug模式，input, process, output将顺序调用，而非通过队列中转，便于排查问题</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">extra</span><span class="p">,</span> <span class="n">worker_name</span><span class="p">,</span> <span class="n">debug</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;启动程序</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        task:</span>
+
+<span class="sd">    Returns:</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_global</span><span class="o">.</span><span class="n">EXTRA</span> <span class="o">=</span> <span class="n">Extra</span><span class="p">(</span><span class="n">extra</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">_global</span><span class="o">.</span><span class="n">EXTRA</span><span class="p">,</span> <span class="s1">&#39;env&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">):</span>
+        <span class="n">_global</span><span class="o">.</span><span class="n">ENV</span> <span class="o">=</span> <span class="n">_global</span><span class="o">.</span><span class="n">EXTRA</span><span class="o">.</span><span class="n">env</span>
+    <span class="k">if</span> <span class="n">worker_name</span><span class="p">:</span>
+        <span class="n">_global</span><span class="o">.</span><span class="n">WORKER_NAME</span> <span class="o">=</span> <span class="n">worker_name</span>
+    <span class="n">go</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">debug</span><span class="p">)</span>
+
+
+<span class="n">templates_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)),</span> <span class="s1">&#39;templates&#39;</span><span class="p">)</span>
+
+
+<span class="nd">@main</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">context_settings</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">ignore_unknown_options</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">quickstart</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;创建模板</span>
+
+<span class="sd">    Returns:</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">project_name</span> <span class="o">=</span> <span class="n">click</span><span class="o">.</span><span class="n">prompt</span><span class="p">(</span><span class="s1">&#39;请输入新建项目名&#39;</span><span class="p">)</span>
+    <span class="n">project_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">click</span><span class="o">.</span><span class="n">prompt</span><span class="p">(</span><span class="s1">&#39;请输入项目所在路径(将自动在该路径下创建一个文件夹(</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">project_name</span><span class="p">)))</span>
+    <span class="n">project_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_dir</span><span class="p">,</span> <span class="n">project_name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">project_path</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">project_path</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">templates_path</span><span class="p">):</span>
+        <span class="n">filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">templates_path</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
+            <span class="n">des_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_path</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">des_path</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">start</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, zikunchen
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

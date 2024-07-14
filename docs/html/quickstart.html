@@ -1,0 +1,284 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>quickstart &mdash; fluent  文档</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script type="text/javascript" src="_static/translations.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="scheduler" href="scheduler.html" />
+    <link rel="prev" title="Install fluent" href="install.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> fluent
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="fluent.html">fluent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install fluent</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#create-job-with-templates">1. Create job with templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#start-job">2. Start job</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">3. 启动参数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#attention">4. Attention</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scheduler.html">scheduler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitor.html">monitor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="thread_flex.html">thread_flex</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitor_resource.html">monitor_resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contask.html">crontask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">config文件的使用方式</a></li>
+<li class="toctree-l1"><a class="reference internal" href="log.html">fluent log 设计原则</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gevent.html">gevent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="如何写一个插件.html">如何写一个插件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fluent API.html">fluent API</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">fluent</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>quickstart</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/quickstart.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="quickstart">
+<span id="id1"></span><h1>quickstart<a class="headerlink" href="#quickstart" title="永久链接至标题">¶</a></h1>
+<div class="section" id="create-job-with-templates">
+<h2>1. Create job with templates<a class="headerlink" href="#create-job-with-templates" title="永久链接至标题">¶</a></h2>
+<p>使用模板创建任务</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ fluent quickstart
+$ 请输入新建项目名:
+$ <span class="nb">test</span>
+$ 请输入项目所在路径<span class="o">(</span>将自动在该路径下创建一个文件夹<span class="o">(</span><span class="nb">test</span><span class="o">)</span>
+$ ./
+</pre></div>
+</div>
+<p>此时当前目录下创建了文件夹test</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ ls <span class="nb">test</span>
+config.yaml input.py    output.py   process.py   __init__.py  crontask.py
+</pre></div>
+</div>
+</div>
+<div class="section" id="start-job">
+<h2>2. Start job<a class="headerlink" href="#start-job" title="永久链接至标题">¶</a></h2>
+<p>定义程序</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">inputer.py</span></code></span><a class="headerlink" href="#id3" title="永久链接至代码">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fluent.core</span> <span class="kn">import</span> <span class="n">Inputer</span>
+
+<span class="k">class</span> <span class="nc">UserInputer</span><span class="p">(</span><span class="n">Inputer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;用户定义handle_item&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">handle_item</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<p>启动程序</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ fluent start <span class="nb">test</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id2">
+<h2>3. 启动参数<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ fluent start <span class="nb">test</span> --extra <span class="nv">env</span><span class="o">=</span>test,name<span class="o">=</span><span class="nb">test</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 使用启动参数</span>
+<span class="kn">from</span> <span class="nn">fluent</span> <span class="kn">import</span> <span class="n">_global</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">_global</span><span class="o">.</span><span class="n">_EXTRA</span><span class="o">.</span><span class="n">env</span>
+<span class="n">name</span> <span class="o">=</span> <span class="n">_global</span><span class="o">.</span><span class="n">_EXTRA</span><span class="o">.</span><span class="n">name</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="attention">
+<h2>4. Attention<a class="headerlink" href="#attention" title="永久链接至标题">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">注解</p>
+<p>不能使用 <code class="docutils literal notranslate"><span class="pre">kill</span> <span class="pre">-9</span> <span class="pre">PID</span></code> 去终止进程，因为数据在队列中缓冲，需要等待现有数据消费完，除非打算丢弃内存队列中的数据</p>
+<p>应使用以下方式:</p>
+<ul class="last simple">
+<li>Ctrl + C</li>
+<li><code class="docutils literal notranslate"><span class="pre">kill</span> <span class="pre">-2</span> <span class="pre">PID</span></code></li>
+<li>使用 <code class="docutils literal notranslate"><span class="pre">supervisorctl</span> <span class="pre">start</span> <span class="pre">or</span> <span class="pre">stop</span> <span class="pre">project</span></code></li>
+<li>使用弹性线程时，线程会动态创建退出, 需要注意是否有内存泄漏</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="scheduler.html" class="btn btn-neutral float-right" title="scheduler" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="install.html" class="btn btn-neutral float-left" title="Install fluent" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, zikunchen
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
